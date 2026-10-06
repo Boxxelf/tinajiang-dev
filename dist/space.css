@@ -64,11 +64,14 @@ body:has(.work-collection){background:#fff;color:#171717}
  .space-controls button{height:32px;min-width:30px}
 }
 
-/* Thin, fixed glass bands soften content as it crosses the viewport edges. */
+/* Curved glass: each edge bends an 8vh band, with spectral dispersion. */
 .viewport-glass{position:fixed;inset:0;z-index:2500;pointer-events:none}
-.viewport-glass::before,.viewport-glass::after{content:'';position:absolute;left:0;right:0;height:56px;background:rgba(255,255,255,.035);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);pointer-events:none}
-.viewport-glass::before{top:0;-webkit-mask-image:linear-gradient(to bottom,#000,rgba(0,0,0,.7) 25%,transparent);mask-image:linear-gradient(to bottom,#000,rgba(0,0,0,.7) 25%,transparent)}
-.viewport-glass::after{bottom:0;-webkit-mask-image:linear-gradient(to top,#000,rgba(0,0,0,.7) 25%,transparent);mask-image:linear-gradient(to top,#000,rgba(0,0,0,.7) 25%,transparent)}
+.viewport-glass::before,.viewport-glass::after{content:'';position:absolute;left:0;right:0;height:9.6vh;background:transparent;pointer-events:none;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);-webkit-mask-image:linear-gradient(to bottom,#000,transparent);mask-image:linear-gradient(to bottom,#000,transparent)}
+.viewport-glass::before{top:0}
+.viewport-glass::after{bottom:0;transform:rotate(180deg)}
+.glass-refraction-ready .viewport-glass::before,.glass-refraction-ready .viewport-glass::after{-webkit-mask-image:none;mask-image:none;transform:none}
+.glass-refraction-ready .viewport-glass::before{-webkit-backdrop-filter:url(#edge-lens-top);backdrop-filter:url(#edge-lens-top)}
+.glass-refraction-ready .viewport-glass::after{-webkit-backdrop-filter:url(#edge-lens-bottom);backdrop-filter:url(#edge-lens-bottom)}
 .site-header{z-index:3000}
 .space-footer{z-index:3000}
 .work-tile-image img,.art-item a img{transition:transform .65s cubic-bezier(.2,.65,.3,1),filter .35s ease}
@@ -79,6 +82,6 @@ body:has(.work-collection){background:#fff;color:#171717}
 }
 .work-tile:focus-visible .work-tile-image img,.art-item a:focus-visible img{filter:brightness(.82) blur(2px)}
 .space-card:focus-visible img{filter:brightness(.82) blur(.85px)}
-@media(max-width:600px){.viewport-glass::before,.viewport-glass::after{height:36px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}}
+
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.viewport-glass::before,.viewport-glass::after{background:var(--paper);opacity:.22}}
 @media(prefers-reduced-motion:reduce){.work-tile-image img,.art-item a img,.space-card img{transition:none}}
