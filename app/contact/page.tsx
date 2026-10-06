@@ -1,0 +1,3 @@
+import ContactActions from '@/components/contact-actions';
+export const metadata={title:'Contact | Tina Jiang'};
+export default function Contact(){return <main className="inner-page"><section className="contact-page section-wrap"><p className="eyebrow">Contact</p><h1>A conversation<br/>is a good place<br/>to start.</h1><div className="contact-content"><p>Have a project in mind, an interesting question, or a shared curiosity? I’d love to hear from you.</p><ContactActions/><div className="contact-links"><a href="https://www.linkedin.com/in/tina-jiang-77b432278/" target="_blank" rel="noreferrer">Connect on LinkedIn</a><a href="/Tina-Jiang-Resume.pdf" target="_blank" rel="noreferrer">View résumé</a></div></div></section></main>}

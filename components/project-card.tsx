@@ -1,0 +1,3 @@
+import Link from 'next/link';
+import {Project} from '@/lib/projects';
+export default function ProjectCard({project:p,offset=false}:{project:Project;offset?:boolean}){return <Link className={`work-card ${offset?'offset':''}`} href={`/work/${p.slug}`}><div className={`work-image ${p.nda?'research-cover':''}`}>{p.nda?<div><span>USC × American Honda</span><strong>Physical products.<br/>Spatial possibilities.</strong><small>Research / 2026</small></div>:<img src={p.image} alt={p.alt} loading="lazy" width="900" height="700"/>}<span className="project-open">View project</span></div><div className="work-meta"><h3>{p.title}</h3><span>{p.category} / {p.year}</span></div><p>{p.tagline}</p></Link>}

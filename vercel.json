@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "node -e \"console.log('Static site: no package installation required')\"",
+  "buildCommand": "node scripts/build-static.mjs",
+  "outputDirectory": "dist",
+  "trailingSlash": true,
+  "headers": [{"source":"/assets/(.*)","headers":[{"key":"Cache-Control","value":"public, max-age=86400, stale-while-revalidate=604800"}]}]
+}

@@ -1,0 +1,41 @@
+# Tina Jiang · Creative Space
+
+The published frontend is a lightweight static portfolio. It uses real images from Tina’s existing website and the supplied résumé. It does not need a database, Node dependencies, or a framework runtime in production.
+
+## Preview and edit
+
+Use Node 22.18+ (Node 24 is recommended):
+
+```sh
+npm run dev
+```
+
+Open http://127.0.0.1:6183/. No `npm install` is needed. After editing source, run `npm run build` and refresh the browser. The preview server serves the current files without restarting.
+
+- `web/motion.js`: the homepage’s projected 3D gallery, drag inertia, entry choreography, and Cloud / Orbit / Index controls.
+- `web/space.css`: homepage appearance and shared navigation refinements.
+- `web/site.js`: navigation, theme, reveal effects, and email copy.
+- `scripts/build-static.mjs`: generates the homepage, work, 11 product/research case studies, six artwork detail pages, about, contact, and 404 pages into `dist/`.
+- `lib/projects.ts`: project content, artwork details, galleries, and resource links.
+- `app/globals.css`: shared case-study and interior-page styling.
+- `public/`: website résumé, optimized portfolio images, and self-hosted font.
+
+The older React prototype remains in `app/` and `components/` for reference. It is not the deployed frontend. The static version replaces the unstable Vinext / Cloudflare development runtime while retaining the portfolio’s content and navigation.
+
+## Homepage motion
+
+Reference: the supplied `CleanShot 2026-10-04 at 10.39.16 AM.mp4`.
+
+The viewport is a white, centered creative space with 18 camera-facing image planes covering all 17 projects and artworks. An introductory ring expands, contracts, and unfolds into a spatial cloud. Dragging rotates its projected 3D coordinates; release preserves decaying momentum. Depth changes image scale and overlap while faces remain parallel to the screen. Wheel and arrow keys also rotate the scene. Three numbered controls select cloud, orbit, or a labelled index.
+
+Pointer movement is separated from clicks. Keyboard focus reveals the index. Reduced-motion preference skips the intro and uses a stationary index. Rendering pauses when the tab is hidden. Mobile supports touch dragging and tap-through to projects.
+
+## Publishing
+
+`.openai/hosting.json` retains the existing Site identity and declares `dist/` as the static output. Build the output before packaging and publish with the Sites workflow. The retired domain is not linked anywhere in the published pages. The independent Site retains owner-only access.
+
+## Vercel handoff
+
+In Vercel, import `Boxxelf/tinajiang-dev` and leave **Root Directory** at the repository root (`./`). Select Node 24.x. `vercel.json` selects the static output, skips package installation, and uses the dependency-free build script. No secrets, database, or old domain are required. Add the new domain in Vercel after development is complete. Vercel deployment has not been initiated.
+
+The current STEM project links to https://boxxelf.github.io/STEM-Math-Connections-Explorer/. Its optional live embed loads only after the visitor presses the button; older project screenshots are removed. New portrait sizes and gallery thumbnails are pre-generated, so deployment requires no image tooling.

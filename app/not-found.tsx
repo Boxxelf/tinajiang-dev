@@ -1,0 +1,2 @@
+import Link from 'next/link';
+export default function NotFound(){return <main className="inner-page"><section className="page-intro section-wrap"><p className="eyebrow">Page not found</p><h1>A little off<br/>the beaten path.</h1><p>This page is not here. You can find the latest projects in my selected work.</p><Link className="text-link" href="/work">Explore my work <span className="link-line"/></Link></section></main>}
