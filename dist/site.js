@@ -2,6 +2,7 @@
  const menu=document.querySelector('.studio-menu'),panel=document.querySelector('#site-menu');
  const close=()=>{panel.hidden=true;menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open navigation');menu.textContent='+';};
  menu?.addEventListener('click',()=>{const opening=panel.hidden;panel.hidden=!opening;menu.setAttribute('aria-expanded',String(opening));menu.setAttribute('aria-label',opening?'Close navigation':'Open navigation');menu.textContent=opening?'×':'+';});
+ if(document.body.classList.contains('creative-home'))matchMedia('(min-width:901px)').addEventListener('change',event=>{if(event.matches)close()});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){close();menu.focus()}});
  document.addEventListener('pointerdown',e=>{if(!panel.contains(e.target)&&!menu.contains(e.target)&&!panel.hidden)close()});
  try{const theme=localStorage.getItem('tina-theme');if(theme)document.documentElement.dataset.theme=theme}catch{}

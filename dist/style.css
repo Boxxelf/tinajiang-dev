@@ -65,3 +65,17 @@ body:has(.work-collection){background:#fff;color:#171717}
 [data-theme=dark] body:has(.work-collection){background:var(--paper);color:var(--ink)}
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]) body:has(.work-collection){background:var(--paper);color:var(--ink)}}
 @media(prefers-reduced-motion:reduce){.work-tile-image img,.work-tile-view{transition:none}}
+
+/* Direct desktop home navigation; compact menu remains on touch-sized layouts. */
+.studio-header .main-nav{display:none}
+.space-controls{margin-left:0;transform:translateX(-50%)}
+@media(min-width:601px){.studio-header .wordmark{left:26px}}
+@media(min-width:901px){
+ .studio-header{height:44px}
+ .studio-header .wordmark{line-height:44px}
+ .studio-header .main-nav{position:absolute;right:26px;top:0;height:44px;display:flex;gap:26px;pointer-events:auto;font-size:13px}
+ .studio-header .main-nav a{display:flex;align-items:center;min-height:44px;padding:0}
+ .studio-header .studio-menu,.creative-home #site-menu{display:none!important}
+ .space-controls{left:85px;transform:none;height:44px;margin-left:0}
+ .space-controls button{height:32px;min-width:30px}
+}

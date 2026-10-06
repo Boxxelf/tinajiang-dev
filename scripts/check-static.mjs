@@ -5,10 +5,13 @@ function walk(dir){for(const name of readdirSync(dir)){const p=join(dir,name);if
 walk(root);const home=readFileSync(join(root,'index.html'),'utf8');if((home.match(/class="space-card"/g)||[]).length!==18)errors.push('Home must contain 18 project images');if(!readFileSync(join(root,'about/index.html'),'utf8').includes('Ahmanson Lab'))errors.push('Missing Ahmanson Lab');const migration=JSON.parse(readFileSync('lib/migration-map.json','utf8'));
 const gallery=JSON.parse(readFileSync(join(root,'gallery.json'),'utf8'));
 const work=readFileSync(join(root,'work/index.html'),'utf8');
+const practice=readFileSync(join(root,'creative-practice/index.html'),'utf8');
 for(const {destination} of migration){
  if(!existsSync(join(root,destination,'index.html')))errors.push(`Missing migrated detail: ${destination}`);
  if(!gallery.some(x=>x.href===destination))errors.push(`Missing Creative Space entry: ${destination}`);
- if(!work.includes(`href="${destination}"`))errors.push(`Missing Work entry: ${destination}`);
+ const index=destination.startsWith('/creative-practice/')?practice:work;
+ if(!index.includes(`href="${destination}"`))errors.push(`Missing project index entry: ${destination}`);
 }
+if(/href="\/creative-practice\/[^"]+/.test(work))errors.push('Artwork detail links must stay out of Work');
 if(new Set(gallery.map(x=>x.href)).size!==18)errors.push('Expected 18 distinct project destinations');
 if(errors.length){console.error(errors.join('\n'));process.exit(1)}console.log(`${pages} HTML files, ${refs} local links/assets: all valid.`);
