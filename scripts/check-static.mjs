@@ -10,5 +10,5 @@ for(const {destination} of migration){
  if(!gallery.some(x=>x.href===destination))errors.push(`Missing Creative Space entry: ${destination}`);
  if(!work.includes(`href="${destination}"`))errors.push(`Missing Work entry: ${destination}`);
 }
-if(new Set(gallery.map(x=>x.href)).size!==17)errors.push('Expected 17 distinct project destinations');
+if(new Set(gallery.map(x=>x.href)).size!==18)errors.push('Expected 18 distinct project destinations');
 if(errors.length){console.error(errors.join('\n'));process.exit(1)}console.log(`${pages} HTML files, ${refs} local links/assets: all valid.`);

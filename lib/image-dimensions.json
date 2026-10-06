@@ -678,5 +678,61 @@
   "/assets/scent-archive-3.webp": [
     1600,
     900
+  ],
+  "/assets/honda-workshop.webp": [
+    1920,
+    1174
+  ],
+  "/assets/honda-workshop-thumb.webp": [
+    320,
+    196
+  ],
+  "/assets/honda-passthrough.webp": [
+    1920,
+    1080
+  ],
+  "/assets/honda-passthrough-thumb.webp": [
+    320,
+    180
+  ],
+  "/assets/minim-calendar.webp": [
+    1688,
+    1058
+  ],
+  "/assets/minim-calendar-thumb.webp": [
+    320,
+    201
+  ],
+  "/assets/neffy-research.webp": [
+    1920,
+    1440
+  ],
+  "/assets/neffy-research-thumb.webp": [
+    320,
+    240
+  ],
+  "/assets/rewind-slide-1.webp": [
+    1920,
+    1080
+  ],
+  "/assets/rewind-slide-1-thumb.webp": [
+    320,
+    180
+  ],
+  "/assets/rewind-slide-2.webp": [
+    1920,
+    1080
+  ],
+  "/assets/rewind-slide-2-thumb.webp": [
+    320,
+    180
+  ],
+  "/assets/rewind-slide-3.webp": [
+    1920,
+    1080
+  ],
+  "/assets/rewind-slide-3-thumb.webp": [
+    320,
+    180
   ]
 }

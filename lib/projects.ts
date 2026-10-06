@@ -187,8 +187,8 @@ export const projects:Project[]=
     "category": "Spatial computing research",
     "year": "2026",
     "tagline": "Exploring how physical products are reviewed in space.",
-    "image": "/assets/honda-research.webp",
-    "alt": "Mixed reality automotive visualization during the Honda spatial research project",
+    "image": "/assets/honda-workshop.webp",
+    "alt": "Participants exploring Apple Vision Pro during the Honda spatial research workshop",
     "role": "Spatial Computing Researcher",
     "tools": "visionOS, RealityKit, CloudXR, Omniverse",
     "team": "USC Iovine and Young Academy × Honda Impact Lab",
@@ -197,7 +197,9 @@ export const projects:Project[]=
     "sections": [
       {
         "title": "Research at the intersection of physical and digital.",
-        "text": "In collaboration with American Honda, the research explored real-time 3D streaming, interaction fidelity, multi-user design review, and annotation prototypes. My contribution combined spatial research with hands-on prototyping in the visionOS environment."
+        "text": "In collaboration with American Honda, the research explored real-time 3D streaming, interaction fidelity, multi-user design review, and annotation prototypes. My contribution combined spatial research with hands-on prototyping in the visionOS environment.",
+        "image": "/assets/honda-passthrough.webp",
+        "caption": "A passthrough view from Apple Vision Pro during the research workshop."
       },
       {
         "title": "Further details available on request.",
@@ -265,8 +267,8 @@ export const projects:Project[]=
     "category": "Native iOS product",
     "year": "2026",
     "tagline": "Rediscover a memory. Make a little space.",
-    "image": "/assets/rewind-cover.webp",
-    "alt": "Rewind iPhone interfaces showing four-direction photo decisions",
+    "image": "/assets/rewind-slide-1.webp",
+    "alt": "Rewind lock-screen widget, memory deck, Later Stack, and similar-photo tray",
     "role": "Solo Designer & Developer",
     "tools": "SwiftUI, SwiftData, PhotoKit, Vision, AVFoundation",
     "team": "Tina Jiang",
@@ -280,13 +282,15 @@ export const projects:Project[]=
       },
       {
         "title": "Fast gestures. Deliberate decisions.",
-        "text": "Directional locking makes swipes predictable. Deletions stay in a reviewable staging bin until the session ends. Deferred items return after a seven-day pause, giving uncertain decisions room to settle."
+        "text": "Directional locking makes swipes predictable. Deletions stay in a reviewable staging bin until the session ends. Deferred items return after a seven-day pause, giving uncertain decisions room to settle.",
+        "image": "/assets/rewind-slide-2.webp",
+        "caption": "Directional gestures for deciding what to keep, skip, revisit, or delete."
       },
       {
         "title": "Private by design.",
         "text": "SwiftData stores the local decision history, while PhotoKit handles media access. Display-sized thumbnails and limited prefetching keep the deck responsive. Photos remain on the device, with no account or upload pipeline.",
-        "image": "/assets/rewind-detail.webp",
-        "caption": "Calendar, Chapters, and map views in Rewind."
+        "image": "/assets/rewind-slide-3.webp",
+        "caption": "Explore past memories through the calendar, Chapters, and map."
       }
     ]
   },
@@ -296,14 +300,14 @@ export const projects:Project[]=
     "category": "Product, brand & interaction design",
     "year": "2026",
     "tagline": "How much time passed? How much did you feel?",
-    "image": "/assets/minim-cover.webp",
-    "alt": "MINIM brand artwork with four colorful characters",
+    "image": "/assets/minim-calendar.webp",
+    "alt": "MINIM daily calendar, time-perception cards, and illustrated card collection",
     "role": "UI/UX Design, Branding & Figma Prototyping",
     "tools": "Figma Design, Figma Slides",
     "team": "Tina Jiang, Psychea Dai, Jyue-An Yao",
     "intro": "A Figma prototype that visualizes the gap between perceived and elapsed time. Created for FigBuild 2026, MINIM uses gentle reflection, collectible cards, and expressive characters to make time perception tangible.",
-    "link": "https://devpost.com/software/minim-sxjw9i",
-    "linkLabel": "View MINIM on Devpost",
+    "link": "https://www.figma.com/proto/azTVMecMozxoicAvBOuBRq/FigBuild26-Prototype?page-id=0%3A1&node-id=6-2845&p=f&viewport=-398%2C255%2C0.13&t=wLaJA8fdcwSN6eOO-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=109%3A3623&show-proto-sidebar=1",
+    "linkLabel": "Try it out",
     "sections": [
       {
         "title": "The moment of realization.",
@@ -316,6 +320,16 @@ export const projects:Project[]=
       {
         "title": "A visual system with a softer voice.",
         "text": "I worked on the interface, branding, character design, and core interaction flows. Organic vector characters and a warm dark palette bring personality to a structure grounded in familiar iOS components. The project was designed and prototyped in Figma."
+      }
+    ],
+    "resources": [
+      {
+        "label": "View the slide presentation",
+        "href": "https://www.figma.com/deck/uQMQuDOselYtKIqGPXZn9c/MINIM-FigmaBuild?node-id=1-42&t=SbwZ4RvRXCDAJISh-1"
+      },
+      {
+        "label": "Read the Devpost story",
+        "href": "https://devpost.com/software/minim-sxjw9i"
       }
     ]
   },
@@ -417,14 +431,6 @@ export const projects:Project[]=
         "href": "https://www.canva.com/design/DAG-ej90dKQ/Hh8fXnWxfzBSQhhB2mVtWg/view?utm_content=DAG-ej90dKQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hfdca5a684f"
       }
     ],
-    "gallery": [
-      "/assets/thrive-1.webp",
-      "/assets/thrive-2.webp",
-      "/assets/thrive-3.webp",
-      "/assets/thrive-4.webp",
-      "/assets/thrive-5.webp",
-      "/assets/thrive-6.webp"
-    ],
     "sections": [
       {
         "title": "The starting question: access and engagement.",
@@ -432,15 +438,11 @@ export const projects:Project[]=
       },
       {
         "title": "An early direction: connected health records.",
-        "text": "Our first concept paired a Universal Health Record with a patient-and-doctor chatbot. Patient mode guided structured symptom intake; a proposed authenticated clinician mode surfaced a concise history and referral packet. The aim was clearer handoffs across primary care and specialists.",
-        "image": "/assets/thrive-3.webp",
-        "caption": "The early Universal Health Record and chatbot concept."
+        "text": "Our first concept paired a Universal Health Record with a patient-and-doctor chatbot. Patient mode guided structured symptom intake; a proposed authenticated clinician mode surfaced a concise history and referral packet. The aim was clearer handoffs across primary care and specialists."
       },
       {
         "title": "Why we changed direction.",
-        "text": "A shared medical-record ecosystem would require coordination among hospitals, clinics, pharmacies, and specialists, together with substantial technical and regulatory work. We narrowed the project to a wellness concept that individuals could adopt independently. The research continued to inform our focus on communication, personalization, and access.",
-        "image": "/assets/thrive-4.webp",
-        "caption": "An early workflow for patient intake, records, and clinician communication."
+        "text": "A shared medical-record ecosystem would require coordination among hospitals, clinics, pharmacies, and specialists, together with substantial technical and regulatory work. We narrowed the project to a wellness concept that individuals could adopt independently. The research continued to inform our focus on communication, personalization, and access."
       },
       {
         "title": "Translating a framework into daily interactions.",
@@ -579,6 +581,29 @@ export const projects:Project[]=
       {
         "title": "Building the prototype.",
         "text": "Created for the 2025 Viverse Spark Hack, the prototype combines Unity world building, C# gameplay work, and narrative design. My role covered development, game design, and environments, working with Sabrina Jiang and Psychea Dai."
+      }
+    ]
+  },
+  {
+    "slug": "neffy",
+    "title": "Neffy — ARS Pharma Challenge Sprint",
+    "category": "Service design research",
+    "year": "Spring 2026",
+    "tagline": "Connecting awareness, access, and action on campus.",
+    "image": "/assets/neffy-research.webp",
+    "alt": "Neffy demonstration device, blue carrying case, and printed materials from the research sprint",
+    "role": "Challenge Sprint Researcher",
+    "tools": "Research synthesis, service design",
+    "team": "USC Iovine and Young Academy × ARS Pharma",
+    "intro": "A challenge sprint with ARS Pharma focused on neffy and the campus experience of anaphylaxis preparedness. The research brief considers how students, bystanders, and campus responders can be better connected through awareness, access, and clearer service touchpoints.",
+    "sections": [
+      {
+        "title": "Understanding the campus context.",
+        "text": "The sprint frames preparedness as a service design question: how do people recognize available resources, find them when needed, and understand their role in a wider response system? The focus spans student life, campus communication, and the handoffs between people and services."
+      },
+      {
+        "title": "From awareness to a connected service.",
+        "text": "The project explores opportunities for education, resource visibility, and coordinated campus support. My role was Challenge Sprint Researcher, contributing to this research-led exploration of the experience around neffy."
       }
     ]
   }
