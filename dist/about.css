@@ -1,0 +1,79 @@
+/* A quiet, white editorial stage; the portrait is the one playful element. */
+.about-world{--paper:#fff;--ink:#191919;--muted:#747474;--line:#e7e7e7;--surface:#fafafa;background:#fff;color:#191919}
+.about-world .inner-page{padding-top:0}
+.about-world .site-header{height:78px;padding:0 32px;font-size:12px}
+.about-world .wordmark{font-size:19px}
+.about-world .main-nav{font-size:12px;gap:26px}
+.about-world .main-nav a[href="/about/"]{text-decoration:underline;text-underline-offset:6px}
+.about-world .viewport-glass{display:none}
+.about-journey{position:relative;isolation:isolate}
+.about-scene{position:relative;min-height:760px;height:100svh;max-height:1150px}
+.avatar-rail{position:absolute;inset:0;pointer-events:none;z-index:2}
+.avatar-anchor{position:sticky;top:calc(60svh - 110px);width:220px;height:220px;margin:0 auto;pointer-events:auto;touch-action:pan-y;user-select:none}
+.avatar-anchor img{transform:scale(.91)}
+.avatar-anchor img,.avatar-anchor canvas{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain}
+.avatar-anchor canvas{opacity:0}
+.avatar-anchor.avatar-ready canvas{opacity:1}
+.avatar-anchor.avatar-ready img{visibility:hidden}
+.about-byline{position:absolute;top:18%;left:24px;right:24px;text-align:center;font-size:11px;color:var(--muted)}
+.about-opening h1{position:absolute;top:24%;left:20px;right:20px;text-align:center;font-family:Georgia,'Times New Roman',serif;font-size:clamp(58px,6vw,88px);font-weight:400;line-height:1.04;letter-spacing:-.055em}
+.about-introduction{position:absolute;top:75%;left:24px;right:24px;text-align:center;font-size:12px;line-height:1.7}
+.about-scroll{position:absolute;bottom:34px;left:32px;font-size:11px;color:var(--muted);padding:10px 0}
+.about-scroll span{display:inline-block;margin-left:16px}
+.avatar-motion-toggle{position:absolute;bottom:34px;right:32px;border:0;background:none;padding:10px 0;color:var(--muted);font-size:11px;text-decoration:underline;text-underline-offset:4px}
+.chapter-heading{position:absolute;top:18%;left:24px;right:24px;text-align:center}
+.chapter-heading>span{display:block;font-size:11px;color:var(--muted);margin-bottom:18px}
+.chapter-heading h2{font-family:Georgia,'Times New Roman',serif;font-size:clamp(32px,3.3vw,48px);font-weight:400;letter-spacing:-.045em;line-height:1.2}
+.chapter-copy{position:absolute;width:230px;font-family:Georgia,'Times New Roman',serif;font-size:17px;line-height:1.55;letter-spacing:-.025em}
+.chapter-left{right:calc(50% + 175px);top:37%;text-align:right}
+.chapter-right{left:calc(50% + 175px);top:58%;text-align:left}
+.chapter-copy h3{font-family:Studio,'Helvetica Neue',Arial,sans-serif;font-size:11px;letter-spacing:0;font-weight:500;margin-bottom:19px}
+.chapter-copy a{display:inline-block;font-family:Studio,'Helvetica Neue',Arial,sans-serif;font-size:11px;letter-spacing:0;border-bottom:1px solid #bcbcbc;padding:6px 0;margin-top:22px}
+.about-disciplines .chapter-copy{line-height:1.75}
+.about-world .experience{background:#fff;border-top:1px solid var(--line);max-width:1080px;margin:auto;padding:90px 50px}
+.about-world .experience>h2{font:400 clamp(32px,4vw,50px)/1.15 Georgia,'Times New Roman',serif;letter-spacing:-.045em;margin-bottom:50px}
+.about-world .experience-row{grid-template-columns:.7fr 1.15fr 1.5fr;gap:30px;padding:28px 0}
+.about-world .experience-row h3{font-size:17px;line-height:1.4}
+.about-world .experience-row p,.about-world .experience-row>span{font-size:12px;line-height:1.75}
+.about-world .experience-row .text-link{font-size:12px}
+.about-world .education{max-width:1080px;margin:auto;padding:35px 50px 110px}
+.about-world .education-grid h3{font:400 24px/1.25 Georgia,'Times New Roman',serif;letter-spacing:-.03em}
+.about-world .education-grid p,.about-world .education-grid span{font-size:12px}
+.about-world .site-footer{background:#fafafa}
+.about-world .footer-top h2{font-family:Georgia,'Times New Roman',serif;font-weight:400;letter-spacing:-.055em}
+@media(min-width:1500px){.chapter-left{right:calc(50% + 210px)}.chapter-right{left:calc(50% + 210px)}.chapter-copy{width:255px;font-size:19px}}
+@media(max-width:900px){
+ .about-scene{min-height:720px}
+ .avatar-anchor{width:200px;height:200px;top:calc(60svh - 100px)}
+ .chapter-copy{width:190px;font-size:16px}
+ .chapter-left{right:calc(50% + 120px)}.chapter-right{left:calc(50% + 120px)}
+ .about-world .experience-row{grid-template-columns:.7fr 1.3fr}.about-world .experience-row>p{grid-column:2}
+}
+@media(max-width:650px){
+ .about-world .site-header{height:68px;padding:0 22px}
+ .about-world .site-header .studio-menu{font-size:24px}
+ .about-scene{height:100svh;min-height:740px;max-height:none}
+ .avatar-anchor{width:200px;height:200px;top:calc(47svh - 100px)}
+ .about-byline{top:19%;font-size:10px}
+ .about-opening h1{top:27%;font-size:clamp(48px,12vw,70px);letter-spacing:-.055em}
+ .about-introduction{top:70%;font-size:12px}
+ .about-scroll{left:22px;bottom:25px;font-size:10px}
+ .avatar-motion-toggle{right:22px;bottom:20px;font-size:10px;min-height:44px}
+ .chapter-heading{top:10%;left:20px;right:20px}
+ .chapter-heading h2{font-size:33px}
+ .chapter-heading>span{font-size:10px;margin-bottom:14px}
+ .about-chapter{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-content:end;padding:0 22px 55px;height:auto;min-height:max(100svh,820px)}
+ .chapter-copy{position:relative;width:auto;font-size:15px;line-height:1.5;letter-spacing:-.03em}
+ .chapter-left{right:auto;left:auto;top:auto;text-align:left;align-self:start}
+ .chapter-right{left:auto;right:auto;top:auto;text-align:left;padding-top:40px;align-self:start}
+ .chapter-copy a{font-size:10px;margin-top:13px}
+ .chapter-copy h3{font-size:10px;margin-bottom:12px}
+ .about-world .experience{padding:65px 22px}
+ .about-world .experience-row{grid-template-columns:1fr;gap:9px;padding:25px 0}
+ .about-world .experience-row>p{grid-column:1}
+ .about-world .education{padding:10px 22px 70px}
+ .about-world .education-grid{grid-template-columns:1fr;gap:34px}
+ .about-world .education-grid h3{margin:12px 0 10px}
+}
+@media(max-width:360px){.chapter-copy{font-size:14px}.chapter-heading h2{font-size:29px}.about-byline{font-size:9px}}
+@media(prefers-reduced-motion:reduce){html:has(.about-world){scroll-behavior:auto}}

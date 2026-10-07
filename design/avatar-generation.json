@@ -1,0 +1,8 @@
+{
+  "mode": "Built-in image_gen",
+  "reference": "public/assets/tina-portrait.webp",
+  "asset": "public/assets/tina-avatar.webp",
+  "source": "design/tina-avatar-source.png",
+  "prompt": "Edit this avatar only: change its rendering style much more strongly into a charming sculpted 3D CARTOON character, like a high-end clay/vinyl animated film character. Current image is too photographic. Keep this same woman’s facial identity, recognizable oval face, black center-parted wavy hair, and turquoise/orange/ivory long earrings. Simplify hair into about 12-18 broad smooth sculpted flowing locks with only a few molded grooves, NO realistic fine hair strands. Make head rounder and cheeks softly fuller, eyes a little larger with large glossy warm brown irises, short rounded button nose, smooth matte clay skin without pores, soft smiling coral mouth. Visible eyeball whites, clear eyelashes and curved eyebrows. The style should instantly read as a polished 3D cartoon, not a retouched human photo. Front-on neutral camera, gaze straight forward, identical level eye height, no head tilt. A floating head ONLY, NO neck, NO torso or shoulders. Keep full hair and earrings in the frame. Soft broad studio lighting and subtle ambient occlusion, transparent background with generous padding. One centered square asset. No text or extra objects.",
+  "implementation": "Transparent generated character texture projected onto a shallow depth mesh, with independent eye-region UV displacement. Not a full sculpted character model. Static image fallback if WebGL is unavailable. Reduced motion defaults to still; user can enable or pause motion."
+}

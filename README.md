@@ -39,3 +39,7 @@ Pointer movement is separated from clicks. Keyboard focus reveals the index. Red
 In Vercel, import `Boxxelf/tinajiang-dev` and leave **Root Directory** at the repository root (`./`). Select Node 24.x. `vercel.json` selects the static output, skips package installation, and uses the dependency-free build script. No secrets, database, or old domain are required. Add the new domain in Vercel after development is complete. Vercel deployment has not been initiated.
 
 The current STEM project links to https://boxxelf.github.io/STEM-Math-Connections-Explorer/. Its optional live embed loads only after the visitor presses the button; older project screenshots are removed. New portrait sizes and gallery thumbnails are pre-generated, so deployment requires no image tooling.
+
+## About portrait
+
+The About page uses `scripts/about-content.mjs` and `web/about.css` for its editorial scroll layout. `web/about-avatar.js` maps a transparent generated portrait onto a shallow depth mesh with independent eye tracking. It needs no external library. Motion stops when settled or offscreen, respects reduced motion, and can be paused. A static image remains visible when WebGL is unavailable. The original photograph is retained in `public/assets/tina-portrait.webp`; generation details are in `design/avatar-generation.json`.
