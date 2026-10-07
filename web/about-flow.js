@@ -7,7 +7,7 @@
   if(!journey || !avatar) return;
   const toggle=document.querySelector('.avatar-motion-toggle');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-  const wide=matchMedia('(min-width: 761px)');
+  const wide=matchMedia('(min-width: 761px) and (min-height: 541px), (min-width: 1001px)');
   const copies=[...journey.querySelectorAll('.chapter-copy')];
   const headings=[...journey.querySelectorAll('.chapter-heading')];
   headings.forEach((heading,index)=>{heading.dataset.flowSide=index%2?'right':'left';});
@@ -16,6 +16,10 @@
   let lines=[], headingBounds=[], frame=0, measuring=false, active=false;
   const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
 
+  let words=[],prepared=false;
+  function prepareWords(){
+    if(prepared)return;
+    prepared=true;
   // Whitespace stays as native text, preserving selection and screen-reader prose.
   for(const copy of copies){
     const walker=document.createTreeWalker(copy,NodeFilter.SHOW_TEXT);
@@ -34,13 +38,17 @@
     // Move each link as one target, including its underline and focus outline.
     for(const link of copy.querySelectorAll('a')) link.classList.add('about-flow-word');
   }
-  const words=[...journey.querySelectorAll('.about-flow-word')];
+  words=[...journey.querySelectorAll('.about-flow-word')];
+  }
   function motionEnabled(){return wide.matches&&!reduced.matches&&toggle?.getAttribute('aria-pressed')!=='true';}
   function reset(){for(const element of [...words,...headings]) element.style.removeProperty('transform');}
   function measure(){
     if(measuring) return;
+    const nextActive=motionEnabled();
+    if(!nextActive&&!active)return;
     measuring=true;
-    active=motionEnabled();
+    active=nextActive;
+    if(active)prepareWords();
     journey.classList.toggle('about-flow-active',active);
     reset(); lines=[]; headingBounds=[];
     if(active){
@@ -101,7 +109,7 @@
       heading.element.style.transform=`translate3d(${offset.toFixed(2)}px,0,0)`;
     }
   }
-  function schedule(){if(!frame) frame=requestAnimationFrame(draw);}
+  function schedule(){if(active&&!document.hidden&&!frame) frame=requestAnimationFrame(draw);}
   let resizeFrame=0;
   function remeasure(){if(!resizeFrame) resizeFrame=requestAnimationFrame(()=>{resizeFrame=0;measure();});}
   window.addEventListener('scroll',schedule,{passive:true});

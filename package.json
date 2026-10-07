@@ -12,7 +12,7 @@
     "start": "node scripts/serve-static.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate",
-    "check": "node --check web/motion.js && node --check web/site.js && node --check web/about-avatar.js && node --check web/about-flow.js && node --check web/edge-glass.js && node scripts/check-static.mjs"
+    "check": "node --check web/motion.js && node --check web/site.js && node --check web/about-avatar.js && node --check web/about-flow.js && node --check web/edge-glass.js && node scripts/check-static.mjs && node scripts/check-avatar-motion.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
