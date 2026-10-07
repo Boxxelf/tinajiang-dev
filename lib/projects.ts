@@ -1,4 +1,4 @@
-export type Project={slug:string;title:string;category:string;year:string;tagline:string;image:string;alt:string;role:string;tools:string;team:string;intro:string;sections:{title:string;text:string;image?:string;caption?:string}[];link?:string;linkLabel?:string;nda?:boolean;platform?:string;duration?:string;context?:string;gallery?:string[];resources?:{label:string;href:string}[]};
+export type Project={slug:string;title:string;category:string;year:string;tagline:string;image:string;alt:string;role:string;tools?:string;team?:string;intro:string;sections:{title:string;text:string;image?:string;caption?:string;video?:string;poster?:string;videoCaption?:string}[];link?:string;linkLabel?:string;nda?:boolean;platform?:string;duration?:string;context?:string;gallery?:string[];resources?:{label:string;href:string}[]};
 export const projects:Project[]=
 [
   {
@@ -604,6 +604,76 @@ export const projects:Project[]=
       {
         "title": "From awareness to a connected service.",
         "text": "The project explores opportunities for education, resource visibility, and coordinated campus support. My role was Challenge Sprint Researcher, contributing to this research-led exploration of the experience around neffy."
+      }
+    ]
+  },
+  {
+    "slug": "yikai-artist-website",
+    "title": "Yi Kai — Artist Website",
+    "category": "Web design",
+    "year": "2026",
+    "tagline": "A life in painting, made for exploration.",
+    "image": "/assets/yikai-home.webp",
+    "alt": "Yi Kai website opening with paintings arranged in a circular gallery",
+    "role": "Web & Interaction Design",
+    "platform": "Website / English & Traditional Chinese",
+    "intro": "A digital home for Chinese-American contemporary artist Yi Kai. The website brings paintings, exhibition records, critical writing, and personal photographs into one experience, pairing a quiet editorial layout with a rotating artwork gallery, a photo album, and an interactive bookshelf.",
+    "gallery": [
+      "/assets/yikai-home.webp"
+    ],
+    "sections": [
+      {
+        "title": "An entrance through the paintings.",
+        "text": "The opening ring of paintings unfolds into a focused artwork browser. Scroll and drag interactions move between works, while the title, dimensions, and series navigation give each painting a clear context. Generous space lets the color and texture of the artwork lead.",
+        "video": "/assets/yikai-gallery.mp4",
+        "poster": "/assets/yikai-home.webp",
+        "videoCaption": "Opening sequence and artwork browsing. Silent screen recording.",
+        "image": "/assets/yikai-works.webp",
+        "caption": "The focused artwork view keeps series navigation and artwork details within reach."
+      },
+      {
+        "title": "From discovery to the full archive.",
+        "text": "A dedicated archive turns the collection into a browsable index of 117 works across six series. Category filters, visible counts, and consistent artwork captions support a more direct route through the collection after the exploratory homepage.",
+        "image": "/assets/yikai-archive.webp",
+        "caption": "The Works archive groups paintings by series in a clear three-column layout."
+      },
+      {
+        "title": "Keep the history beside the work.",
+        "text": "Collections brings together paintings, exhibition certificates, portraits, and archival records. A selected document sits beside the related work and a short explanation; the thumbnail strip provides a way to move through the archive without losing that context.",
+        "image": "/assets/yikai-collections.webp",
+        "caption": "An exhibition certificate and the related painting share a single archival view."
+      },
+      {
+        "title": "A reading room for the reviews.",
+        "text": "Reviews uses the visual language of printed matter: warm paper, layered pages, and large serif headlines. A chronological publication index sits alongside the reading area, connecting original scans with publication names and dates.",
+        "image": "/assets/yikai-reviews.webp",
+        "caption": "A chronological index accompanies magazine covers and review clippings."
+      },
+      {
+        "title": "Personal memories, familiar objects.",
+        "text": "The Memories page opens with a vintage computer and a photo album. Visitors can turn through album spreads or enter a retro desktop-style photo browser. These two ways of exploring give the personal archive a different pace from the painting gallery.",
+        "video": "/assets/yikai-memories.mp4",
+        "poster": "/assets/yikai-memories.webp",
+        "videoCaption": "The photo album, page turns, and retro photo browser. Silent screen recording."
+      },
+      {
+        "title": "A biography arranged as a bookshelf.",
+        "text": "About presents a life in painting through seven book-like chapters. Selecting a spine brings a volume forward; opening it reveals a reading view with text and archival imagery. Chapter navigation connects the stories and returns the visitor to the shelf.",
+        "video": "/assets/yikai-about.mp4",
+        "poster": "/assets/yikai-about.webp",
+        "videoCaption": "Selecting a book, opening a chapter, and returning to the shelf. Silent screen recording."
+      },
+      {
+        "title": "Make room for the life around the art.",
+        "text": "An editorial feature about the artist’s home extends the site beyond the work itself. Large architectural photographs, spacious text columns, and a prominent title connect the studio, the house, and everyday life. The page preserves the writer and photographer credits alongside the story.",
+        "image": "/assets/yikai-home-story.webp",
+        "caption": "The home feature pairs a large editorial headline with architecture photography."
+      },
+      {
+        "title": "A consistent frame, different ways to explore.",
+        "text": "The visual system carries a warm off-white background, dark typography, and restrained red accents across the site. Serif display type gives editorial pages their character, while clear navigation and an English / Traditional Chinese language switch tie the distinct browsing experiences together.",
+        "image": "/assets/yikai-studio.webp",
+        "caption": "A pull quote and studio photographs continue the editorial rhythm. Photography in the source page is credited to Luke Johnson."
       }
     ]
   }

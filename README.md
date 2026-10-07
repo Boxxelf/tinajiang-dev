@@ -15,7 +15,7 @@ Open http://127.0.0.1:6183/. No `npm install` is needed. After editing source, r
 - `web/motion.js`: the homepage’s projected 3D gallery, drag inertia, entry choreography, and Cloud / Orbit / Index controls.
 - `web/space.css`: homepage appearance and shared navigation refinements.
 - `web/site.js`: navigation, theme, reveal effects, and email copy.
-- `scripts/build-static.mjs`: generates the homepage, work, 12 product/research case studies, six artwork detail pages, about, contact, and 404 pages into `dist/`.
+- `scripts/build-static.mjs`: generates the homepage, work, 13 design/product/research case studies, six artwork detail pages, about, contact, and 404 pages into `dist/`.
 - `lib/projects.ts`: project content, artwork details, galleries, and resource links.
 - `app/globals.css`: shared case-study and interior-page styling.
 - `public/`: website résumé, optimized portfolio images, and self-hosted font.
@@ -26,7 +26,7 @@ The older React prototype remains in `app/` and `components/` for reference. It 
 
 Reference: the supplied `CleanShot 2026-10-04 at 10.39.16 AM.mp4`.
 
-The viewport is a white, centered creative space with 18 camera-facing image planes covering all 18 projects and artworks. An introductory ring expands, contracts, and unfolds into a spatial cloud. Dragging rotates its projected 3D coordinates; release preserves decaying momentum. Depth changes image scale and overlap while faces remain parallel to the screen. Wheel and arrow keys also rotate the scene. Three numbered controls select cloud, orbit, or a labelled index.
+The viewport is a white, centered creative space with 19 camera-facing image planes covering all 19 projects and artworks. An introductory ring expands, contracts, and unfolds into a spatial cloud. Dragging rotates its projected 3D coordinates; release preserves decaying momentum. Depth changes image scale and overlap while faces remain parallel to the screen. Wheel and arrow keys also rotate the scene. Three numbered controls select cloud, orbit, or a labelled index.
 
 Pointer movement is separated from clicks. Keyboard focus reveals the index. Reduced-motion preference skips the intro and uses a stationary index. Rendering pauses when the tab is hidden. Mobile supports touch dragging and tap-through to projects.
 

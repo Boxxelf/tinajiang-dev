@@ -734,5 +734,45 @@
   "/assets/rewind-slide-3-thumb.webp": [
     320,
     180
+  ],
+  "/assets/yikai-works.webp": [
+    2000,
+    1249
+  ],
+  "/assets/yikai-collections.webp": [
+    2000,
+    1254
+  ],
+  "/assets/yikai-reviews.webp": [
+    2000,
+    1254
+  ],
+  "/assets/yikai-home-story.webp": [
+    2000,
+    1254
+  ],
+  "/assets/yikai-archive.webp": [
+    2000,
+    1250
+  ],
+  "/assets/yikai-studio.webp": [
+    2000,
+    1254
+  ],
+  "/assets/yikai-home.webp": [
+    2000,
+    1253
+  ],
+  "/assets/yikai-home-thumb.webp": [
+    640,
+    401
+  ],
+  "/assets/yikai-memories.webp": [
+    2000,
+    1254
+  ],
+  "/assets/yikai-about.webp": [
+    2000,
+    1254
   ]
 }

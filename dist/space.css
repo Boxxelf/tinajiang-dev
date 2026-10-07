@@ -85,3 +85,10 @@ body:has(.work-collection){background:#fff;color:#171717}
 
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.viewport-glass::before,.viewport-glass::after{background:var(--paper);opacity:.22}}
 @media(prefers-reduced-motion:reduce){.work-tile-image img,.art-item a img,.space-card img{transition:none}}
+
+/* Screen recordings keep their original frame and load only on request. */
+.case-video video{display:block;width:100%;height:auto;background:#faf8f2;border:1px solid var(--line)}
+.case-video video:focus-visible{outline:2px solid var(--accent);outline-offset:6px}
+
+.work-tile[href="/work/yikai-artist-website/"] .work-tile-image{background:#faf8f2}
+.work-tile[href="/work/yikai-artist-website/"] .work-tile-image img{object-fit:contain}
