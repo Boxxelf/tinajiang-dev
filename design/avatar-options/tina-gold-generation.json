@@ -1,0 +1,8 @@
+{
+  "mode": "Built-in image_gen",
+  "reference": "design/avatar-options/tina-chrome-neutral-source.png",
+  "source": "design/avatar-options/tina-gold-source.png",
+  "fallback_asset": "public/assets/tina-avatar-gold.webp",
+  "purpose": "Static fallback for the procedural, volumetric WebGL portrait",
+  "prompt": "Use case: precise-object-edit. Edit target: the supplied approved silver-chrome mascot avatar. Asset type: transparent fallback portrait for Tina Jiang's About website. Preserve the exact character identity and front-facing composition: a smooth rounded oval egg face, exactly two small vertical pill-shaped eyes, NO nose or mouth, sculptural center-parted wavy hair, three-bead dangling earrings. Change the metal from silver to LOW-SATURATION pale champagne gold, luxurious quiet beige-gold, NOT yellow, NOT orange. Make the shapes read as a physical, genuinely three-dimensional collectible sculpture, with fuller rounded surfaces, pronounced but soft sculptural depth, realistic occlusion between layered wavy locks and face, and thicker rounded edges. Use a soft studio environment with warm-white and very subtle pale-peach reflections. No blue, purple or saturated accent. Avoid the original's large jet-black regions: shadows should be controlled warm-gray bronze, with gentle readable transitions and luminous ivory softbox highlights. Keep a reflective polished metal finish, not matte or plastic. Do not add details, face parts or a body. Keep the same compact silhouette, hair, earrings and two eye pills. Centered complete floating head with all edges inside a square transparent canvas and comfortable transparent margins. No background, ground, text, logo or UI."
+}
