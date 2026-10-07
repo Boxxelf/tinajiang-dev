@@ -10,7 +10,7 @@
 .about-scene{position:relative;min-height:760px;height:100svh;max-height:1150px}
 .avatar-rail{position:absolute;inset:0;pointer-events:none;z-index:2}
 .avatar-anchor{position:sticky;top:calc(60svh - 110px);width:220px;height:220px;margin:0 auto;pointer-events:auto;touch-action:pan-y;user-select:none}
-.avatar-anchor img{transform:scale(.91)}
+.avatar-anchor img{transform:scale(1.10)}
 .avatar-anchor img,.avatar-anchor canvas{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain}
 .avatar-anchor canvas{opacity:0}
 .avatar-anchor.avatar-ready canvas{opacity:1}

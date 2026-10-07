@@ -1,6 +1,6 @@
-/* A small, self-contained 3D sculpture: closed head, hair, eyes and earrings.
-   Champagne metal reflects soft studio lights; no portrait texture or runtime
-   download is used. Pointer motion changes the geometry and its reflections. */
+/* Closed reference-contour reconstruction with photo-projected front color.
+   Depth and the unseen back are inferred from the approved front image.
+   See scripts/build-avatar-model.py and the portable reference GLB. */
 (() => {
   const canvas = document.querySelector('#tina-avatar');
   if (!canvas) return;
@@ -27,90 +27,69 @@
   const vertex = `
     attribute vec3 position;
     attribute vec3 normal;
-    attribute float material;
-    attribute float eyePart;
+    attribute vec2 textureCoordinate;
     uniform vec2 turn;
     uniform vec2 gaze;
+    varying vec2 uv;
     varying vec3 worldPosition;
     varying vec3 worldNormal;
-    varying vec3 localPosition;
-    varying float metalKind;
+    varying vec3 referenceNormal;
     vec3 rotateHead(vec3 p) {
-      float cy = cos(turn.x), sy = sin(turn.x);
-      float cp = cos(turn.y), sp = sin(turn.y);
-      p = vec3(cy*p.x + sy*p.z, p.y, -sy*p.x + cy*p.z);
-      p = vec3(p.x, cp*p.y - sp*p.z, sp*p.y + cp*p.z);
-      float roll = -turn.x * .075;
-      p.xy = mat2(cos(roll), sin(roll), -sin(roll), cos(roll)) * p.xy;
-      return p;
+      float cy=cos(turn.x),sy=sin(turn.x),cp=cos(turn.y),sp=sin(turn.y);
+      p=vec3(cy*p.x+sy*p.z,p.y,-sy*p.x+cy*p.z);
+      return vec3(p.x,cp*p.y-sp*p.z,sp*p.y+cp*p.z);
+    }
+    float eye(vec2 center) {
+      vec2 q=(textureCoordinate-center)/vec2(.045,.069);
+      return 1.-smoothstep(.35,1.,dot(q,q));
     }
     void main() {
-      vec3 p = position;
-      // Eyes move across the convex face, independently of the head rotation.
-      vec2 eyeOffset = gaze * vec2(.041, .026) * eyePart;
-      p.xy += eyeOffset;
-      p.z -= (position.x * eyeOffset.x * 1.28 + (position.y + .21) * eyeOffset.y * .80);
-      localPosition = p;
-      worldPosition = rotateHead(p);
-      worldNormal = normalize(rotateHead(normal));
-      metalKind = material;
-      float cameraDistance = 5.2 - worldPosition.z;
-      float focal = 3.58;
-      // True perspective and depth keep side volumes and overlapping locks solid.
-      gl_Position = vec4(worldPosition.xy * focal,
-        cameraDistance * 1.020202 - .2020202, cameraDistance);
+      vec3 p=position;
+      float eyes=max(eye(vec2(.404,.482)),eye(vec2(.590,.482)));
+      p.xy+=gaze*vec2(.032,.022)*eyes;
+      uv=textureCoordinate;
+      referenceNormal=normal;
+      worldPosition=rotateHead(p);
+      worldNormal=normalize(rotateHead(normal));
+      gl_Position=vec4(worldPosition.xy*(3.58/5.2),-worldPosition.z*.18,1.);
     }`;
   const fragment = `
     precision mediump float;
+    uniform sampler2D portrait;
     uniform vec2 lightPosition;
+    uniform float rear;
+    varying vec2 uv;
     varying vec3 worldPosition;
     varying vec3 worldNormal;
-    varying vec3 localPosition;
-    varying float metalKind;
-    float softbox(vec3 reflection, vec2 center, vec2 size) {
-      vec2 q = (reflection.xy - center) / size;
-      return exp(-.5 * (pow(q.x, 4.) + pow(q.y, 4.)))
-        * smoothstep(-.20, .35, reflection.z);
-    }
+    varying vec3 referenceNormal;
     void main() {
-      vec3 n = normalize(worldNormal);
-      vec3 view = normalize(vec3(0., 0., 5.2) - worldPosition);
-      vec3 reflection = reflect(-view, n);
-      vec3 champagne = vec3(.90, .66, .39);
-      if (metalKind > .5 && metalKind < 1.5) champagne *= vec3(.95, .95, .94);
-      if (metalKind > 1.5 && metalKind < 2.5) champagne = vec3(.29, .22, .13);
-      if (metalKind > 2.5) champagne = vec3(.94, .72, .43);
-
-      float key = max(0., dot(n, normalize(vec3(-.55, .85, 1.2))));
-      float fill = max(0., dot(n, normalize(vec3(.95, .15, .65))));
-      float facing = max(0., dot(n, view));
-      float fresnel = pow(1. - facing, 3.);
-      // A warm, neutral environment leaves readable shading even away from a light.
-      float sky = smoothstep(-.70, .65, reflection.y);
-      vec3 environment = mix(vec3(.060, .051, .040), vec3(.49, .46, .40), sky);
-      float horizon = exp(-pow((reflection.y + .24) / .24, 2.));
-      environment *= 1. - horizon * .38;
-      vec3 color = champagne * (environment * .70 + .014 + key * .024 + fill * .012);
-
-      // Broad ivory studio panels reveal the curves instead of making black chrome.
-      float upper = softbox(reflection, vec2(-.44, .50), vec2(.30, .19));
-      float right = softbox(reflection, vec2(.75, .10), vec2(.145, .55));
-      float bottom = softbox(reflection, vec2(-.58, -.70), vec2(.19, .25));
-      color += vec3(1., .94, .82) * (upper * .90 + right * .68 + bottom * .27);
-
-      // The moving reflection is pale peach. Both light direction and the actual
-      // surface normal determine where it appears; there is no painted color patch.
-      vec3 movingLight = normalize(vec3(lightPosition.x * 1.55 + .18,
-        lightPosition.y * 1.15 + .04, 1.25));
-      float moving = pow(max(0., dot(reflection, movingLight)), 11.);
-      color += vec3(.98, .80, .66) * moving * .20;
-      color += champagne * fresnel * .11;
-      if (metalKind < .5) {
-        float fringeShade = exp(-pow((localPosition.y - .48) / .15, 2.));
-        color *= 1. - fringeShade * .12;
+      vec3 n=normalize(worldNormal);
+      vec3 view=normalize(vec3(0.,0.,5.2)-worldPosition);
+      if(rear>.5) {
+        float light=.56+.36*max(0.,dot(n,normalize(vec3(-.4,.7,1.))));
+        float rim=pow(1.-abs(dot(n,view)),3.);
+        gl_FragColor=vec4(vec3(.91,.76,.57)*light+vec3(.15,.16,.17)*rim,1.);
+        return;
       }
-      color = pow(clamp(color, 0., 1.), vec3(1. / 2.2));
-      gl_FragColor = vec4(color, 1.);
+      vec4 reference=texture2D(portrait,uv);
+      if(reference.a<.12)discard;
+      // Preserve the approved photograph's color and fine contours. Move only
+      // the broad reflected illumination, leaving eye rims and hair seams clear.
+      vec2 shift=(n.xy-normalize(referenceNormal).xy)*.028+lightPosition*.007;
+      vec4 lighting=texture2D(portrait,uv,3.2);
+      vec4 moved=texture2D(portrait,uv+shift,3.2);
+      float safe=smoothstep(.88,.99,min(lighting.a,moved.a));
+      vec3 ratio=clamp((moved.rgb+.10)/(lighting.rgb+.10),vec3(.84),vec3(1.17));
+      vec3 color=reference.rgb*mix(vec3(1.),ratio,safe);
+      float turning=min(1.,length(n-normalize(referenceNormal))*4.);
+      float grazing=smoothstep(.40,.80,1.-abs(dot(n,view)))*turning;
+      vec3 softRim=lighting.rgb/max(lighting.a,.25);
+      color=mix(color,softRim,grazing*.72);
+      vec3 reflected=reflect(-view,n);
+      vec3 lamp=normalize(vec3(lightPosition*1.5,1.2));
+      float glint=pow(max(0.,dot(reflected,lamp)),18.)*min(1.,length(lightPosition))*.035;
+      color=mix(color,vec3(1.,.97,.90),glint);
+      gl_FragColor=vec4(clamp(color,0.,1.),reference.a);
     }`;
 
   function compile(type, source) {
@@ -133,135 +112,19 @@
   } catch { fallbackMotionControl(); return; }
   gl.useProgram(program);
 
-  const vertices = [], indices = [];
-  const normalize = p => {
-    const length = Math.hypot(...p) || 1;
-    return p.map(v => v / length);
-  };
-  const cross = (a, b) => [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]];
-  function addVertex(p, n, material, eye = 0) {
-    vertices.push(...p, ...n, material, eye);
-  }
-  function ellipsoid(center, radius, material = 0, eye = 0, segments = 40, rings = 28) {
-    const offset = vertices.length / 8;
-    for (let j = 0; j <= rings; j++) {
-      const theta = Math.PI * j / rings, s = Math.sin(theta), c = Math.cos(theta);
-      for (let i = 0; i <= segments; i++) {
-        const phi = Math.PI * 2 * i / segments;
-        const unit = [s * Math.cos(phi), c, s * Math.sin(phi)];
-        const p = unit.map((v, k) => center[k] + v * radius[k]);
-        const n = normalize(unit.map((v, k) => v / radius[k]));
-        addVertex(p, n, material, eye);
-      }
-    }
-    for (let j = 0; j < rings; j++) for (let i = 0; i < segments; i++) {
-      const a = offset + j * (segments + 1) + i, b = a + segments + 1;
-      indices.push(a, a+1, b, a+1, b+1, b);
-    }
-  }
-  function curvePoint(points, t) {
-    const scaled = Math.min(.999999, Math.max(0, t)) * (points.length - 1);
-    const index = Math.floor(scaled), f = scaled-index;
-    const a = points[Math.max(0,index-1)], b = points[index];
-    const c = points[Math.min(points.length-1,index+1)], d = points[Math.min(points.length-1,index+2)];
-    return b.map((v,k) => .5 * ((2*v) + (-a[k]+c[k])*f
-      + (2*a[k]-5*v+4*c[k]-d[k])*f*f + (-a[k]+3*v-3*c[k]+d[k])*f*f*f));
-  }
-  function lock(points, material = 1, depth = .84) {
-    const steps = (points.length-1)*12, sides = 18, offset = vertices.length/8;
-    const frames = [];
-    for (let j = 0; j <= steps; j++) {
-      const t = j/steps, p = curvePoint(points,t);
-      const before = curvePoint(points,Math.max(0,t-.002));
-      const after = curvePoint(points,Math.min(1,t+.002));
-      const tangent = normalize(after.slice(0,3).map((v,k) => v-before[k]));
-      const n = normalize(cross(tangent,[0,0,1])), b = normalize(cross(tangent,n));
-      frames.push({p,tangent,n,b});
-    }
-    const surfacePoint = (frame,c,s) => frame.p.slice(0,3).map((v,k) =>
-      v + frame.n[k]*c*frame.p[3] + frame.b[k]*s*frame.p[3]*depth);
-    for (let j = 0; j <= steps; j++) {
-      const frame = frames[j];
-      for (let i = 0; i <= sides; i++) {
-        const angle = Math.PI*2*i/sides, c = Math.cos(angle), s = Math.sin(angle);
-        const point = surfacePoint(frame,c,s);
-        const before = surfacePoint(frames[Math.max(0,j-1)],c,s);
-        const after = surfacePoint(frames[Math.min(steps,j+1)],c,s);
-        const along = after.map((v,k) => v-before[k]);
-        const around = frame.n.map((v,k) => -v*s + frame.b[k]*c*depth);
-        let normal = normalize(cross(around,along));
-        const radial = frame.n.map((v,k) => v*c + frame.b[k]*s);
-        if (normal.reduce((sum,v,k) => sum+v*radial[k],0)<0) normal=normal.map(v=>-v);
-        addVertex(point,normal,material);
-      }
-    }
-    for (let j = 0; j < steps; j++) for (let i = 0; i < sides; i++) {
-      const a = offset+j*(sides+1)+i, b = a+sides+1;
-      indices.push(a,a+1,b,a+1,b+1,b);
-    }
-    // Close both ends, so a turned lock has a real, solid silhouette.
-    for (const end of [0,steps]) {
-      const centerIndex = vertices.length/8, frame = frames[end];
-      addVertex(frame.p.slice(0,3),frame.tangent.map(v => v*(end===0?-1:1)),material);
-      for (let i=0;i<sides;i++) indices.push(centerIndex,offset+end*(sides+1)+i,offset+end*(sides+1)+i+1);
-      ellipsoid(frame.p.slice(0,3),[frame.p[3],frame.p[3],frame.p[3]*depth],material,0,20,14);
-    }
-  }
-
-  // The head extends behind the face. The hair surrounds it in depth, rather
-  // than being painted onto a front-facing disc.
-  ellipsoid([0,.05,-.29],[.75,.93,.56],1);
-  ellipsoid([0,-.19,.22],[.665,.745,.55],0,0,64,48);
-  for (const side of [-1,1]) {
-    const mirror = points => points.map(([x,y,z,r]) => [x*side,y,z,r]);
-    lock(mirror([
-      [.06,.88,.18,.085],[.29,1.045,.18,.23],[.56,.92,.18,.25],
-      [.75,.65,.13,.23],[.94,.43,.05,.22],[.91,.20,-.02,.07]
-    ]));
-    lock(mirror([
-      [.69,.35,-.02,.14],[.87,.14,.045,.21],[.93,-.12,.04,.23],
-      [.79,-.39,.045,.18],[.92,-.69,-.01,.23],[.86,-.97,-.015,.24],
-      [.60,-1.12,.01,.13],[.49,-1.075,.005,.025]
-    ]),1,.90);
-    lock(mirror([
-      [.67,-.54,.10,.095],[.62,-.80,.19,.17],[.48,-1.03,.15,.16],
-      [.65,-1.18,.02,.17],[.82,-1.13,-.02,.035]
-    ]));
-    // The S-curved fringe leaves a small center part and overlaps the scalp.
-    lock(mirror([
-      [.045,.69,.55,.065],[.23,.79,.55,.17],[.43,.71,.57,.205],
-      [.56,.47,.59,.18],[.67,.25,.55,.15],[.82,.15,.39,.065]
-    ]),0,.79);
-    ellipsoid([side*.68,-.32,.30],[.13,.18,.12],0,0,28,20);
-    for (let bead=0;bead<3;bead++) {
-      const radius = .066 + bead*.014;
-      ellipsoid([side*.745,-.49-bead*.158,.40],[radius,radius*1.07,radius],3,0,28,20);
-    }
-    // Small inset gold pill eyes retain the approved minimalist expression.
-    const eyeX = side*.25, eyeY = -.205;
-    const eyeZ = .22+.55*Math.sqrt(1-(eyeX/.665)**2-((eyeY+.19)/.745)**2);
-    ellipsoid([eyeX,eyeY,eyeZ+.025],[.083,.171,.043],2,1,32,24);
-    ellipsoid([eyeX,eyeY,eyeZ+.052],[.068,.155,.052],3,1,32,24);
-  }
-
-  gl.bindBuffer(gl.ARRAY_BUFFER,gl.createBuffer());
-  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(vertices),gl.STATIC_DRAW);
-  for (const [name,size,offset] of [['position',3,0],['normal',3,12],['material',1,24],['eyePart',1,28]]) {
-    const attribute = gl.getAttribLocation(program,name);
-    gl.enableVertexAttribArray(attribute);
-    gl.vertexAttribPointer(attribute,size,gl.FLOAT,false,32,offset);
-  }
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,gl.createBuffer());
-  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(indices),gl.STATIC_DRAW);
+  let frontCount=0, totalCount=0;
+  const turnUniform=gl.getUniformLocation(program,'turn');
+  const gazeUniform=gl.getUniformLocation(program,'gaze');
+  const lightUniform=gl.getUniformLocation(program,'lightPosition');
+  const rearUniform=gl.getUniformLocation(program,'rear');
   gl.enable(gl.DEPTH_TEST);
   gl.depthFunc(gl.LEQUAL);
-  const turnUniform = gl.getUniformLocation(program,'turn');
-  const gazeUniform = gl.getUniformLocation(program,'gaze');
-  const lightUniform = gl.getUniformLocation(program,'lightPosition');
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
 
-  let ready=true, visible=true, enabled=!reduced.matches, frame=0, last=0;
-  const restYaw=-.075, restPitch=.035;
-  let targetX=0, targetY=0, yaw=restYaw, pitch=restPitch, eyeX=0, eyeY=0;
+  let ready=false,visible=true,enabled=!reduced.matches,frame=0,last=0;
+  const restYaw=0,restPitch=0;
+  let targetX=0,targetY=0,yaw=restYaw,pitch=restPitch,eyeX=0,eyeY=0;
   const clamp=(v,min,max)=>Math.min(max,Math.max(min,v));
   function draw() {
     gl.clearColor(0,0,0,0);
@@ -269,27 +132,29 @@
     gl.uniform2f(turnUniform,yaw,pitch);
     gl.uniform2f(gazeUniform,eyeX,-eyeY);
     gl.uniform2f(lightUniform,eyeX,-eyeY);
-    gl.drawElements(gl.TRIANGLES,indices.length,gl.UNSIGNED_SHORT,0);
+    gl.uniform1f(rearUniform,0);
+    gl.drawElements(gl.TRIANGLES,frontCount,gl.UNSIGNED_SHORT,0);
+    gl.uniform1f(rearUniform,1);
+    gl.drawElements(gl.TRIANGLES,totalCount-frontCount,gl.UNSIGNED_SHORT,frontCount*2);
   }
   function tick(now) {
     frame=0;
-    if (!ready || !visible || document.hidden) return;
-    const dt=Math.min((now-last)/1000 || .016,.05); last=now;
-    const headEase=1-Math.exp(-dt*7), eyeEase=1-Math.exp(-dt*15);
-    const x=enabled?targetX:0, y=enabled?targetY:0;
-    const desiredYaw=restYaw+x*.44, desiredPitch=restPitch+y*.25;
-    yaw+=(desiredYaw-yaw)*headEase;
-    pitch+=(desiredPitch-pitch)*headEase;
-    eyeX+=(x-eyeX)*eyeEase; eyeY+=(y-eyeY)*eyeEase;
+    if(!ready||!visible||document.hidden)return;
+    const dt=Math.min((now-last)/1000||.016,.05);last=now;
+    const headEase=1-Math.exp(-dt*7),eyeEase=1-Math.exp(-dt*15);
+    const x=enabled?targetX:0,y=enabled?targetY:0;
+    const desiredYaw=x*.24,desiredPitch=y*.14;
+    yaw+=(desiredYaw-yaw)*headEase;pitch+=(desiredPitch-pitch)*headEase;
+    eyeX+=(x-eyeX)*eyeEase;eyeY+=(y-eyeY)*eyeEase;
     draw();
-    if (Math.abs(yaw-desiredYaw)+Math.abs(pitch-desiredPitch)+Math.abs(eyeX-x)+Math.abs(eyeY-y)>.0002) start();
+    if(Math.abs(yaw-desiredYaw)+Math.abs(pitch-desiredPitch)+Math.abs(eyeX-x)+Math.abs(eyeY-y)>.0002)start();
   }
-  function start() { if (!frame && ready && visible && !document.hidden) frame=requestAnimationFrame(tick); }
-  function resize() {
+  function start(){if(!frame&&ready&&visible&&!document.hidden)frame=requestAnimationFrame(tick);}
+  function resize(){
     const size=Math.max(1,Math.round(host.clientWidth*Math.min(devicePixelRatio,2)));
-    if (canvas.width!==size) canvas.width=canvas.height=size;
+    if(canvas.width!==size)canvas.width=canvas.height=size;
     gl.viewport(0,0,canvas.width,canvas.height);
-    if (ready) draw();
+    if(ready)draw();
   }
   function point(event) {
     if (!enabled || !visible || (event.pointerType==='touch' && !host.contains(event.target))) return;
@@ -333,7 +198,36 @@
     event.preventDefault();ready=false;cancelAnimationFrame(frame);frame=0;
     host.classList.remove('avatar-ready');updateToggle();
   });
-  resize();
-  host.classList.add('avatar-ready');
+  async function loadModel(){
+    try{
+      const photo=host.querySelector('img');
+      const response=await fetch('/assets/tina-avatar-reference.bin');
+      if(!response.ok)throw new Error('Portrait model unavailable');
+      const bytes=await response.arrayBuffer();
+      const header=new Uint32Array(bytes,0,4);
+      if(header[0]!==0x54494E41)throw new Error('Invalid portrait model');
+      const count=header[1];frontCount=header[2];totalCount=header[3];
+      if(bytes.byteLength!==16+count*32+totalCount*2)throw new Error('Incomplete portrait model');
+      gl.bindBuffer(gl.ARRAY_BUFFER,gl.createBuffer());
+      gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(bytes,16,count*8),gl.STATIC_DRAW);
+      for(const [name,size,offset] of [['position',3,0],['normal',3,12],['textureCoordinate',2,24]]){
+        const attribute=gl.getAttribLocation(program,name);
+        gl.enableVertexAttribArray(attribute);gl.vertexAttribPointer(attribute,size,gl.FLOAT,false,32,offset);
+      }
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,gl.createBuffer());
+      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(bytes,16+count*32,totalCount),gl.STATIC_DRAW);
+      await photo.decode();
+      gl.bindTexture(gl.TEXTURE_2D,gl.createTexture());
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
+      gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,photo);
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);
+      gl.generateMipmap(gl.TEXTURE_2D);
+      ready=true;resize();host.classList.add('avatar-ready');updateToggle();
+    }catch{ready=false;host.classList.remove('avatar-ready');updateToggle();}
+  }
   updateToggle();
+  loadModel();
 })();

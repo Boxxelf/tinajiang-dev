@@ -1,0 +1,11 @@
+{
+  "reference": "design/avatar-options/tina-gold-source.png",
+  "vertices": 57848,
+  "triangles": 115696,
+  "closed_manifold": true,
+  "method": "Reference-contour mesh with rounded anatomical depth, photo-projected front, and reconstructed closed back",
+  "front_color": "Unmodified supplied reference image",
+  "unobserved_geometry": "Back and depth inferred from the single front image",
+  "runtime": "public/assets/tina-avatar-reference.bin",
+  "portable_model": "public/assets/tina-avatar-reference.glb"
+}
