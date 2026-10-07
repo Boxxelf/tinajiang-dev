@@ -1,5 +1,5 @@
-/* The generated portrait is mapped onto a shallow sculpted mesh. Head rotation
-   and local eye texture movement are independent; no external runtime is needed. */
+/* Neutral chrome artwork on a shallow sculpted mesh. Head, eyes and a reflected
+   blue environment light respond independently; the texture contains no blue. */
 (() => {
   const canvas = document.querySelector('#tina-avatar');
   if (!canvas) return;
@@ -13,7 +13,7 @@
 
   const vertex = `
     attribute vec2 position;
-    uniform vec2 turn;
+    uniform mediump vec2 turn;
     varying vec2 uv;
     void main() {
       uv = position * .5 + .5;
@@ -21,8 +21,7 @@
       float y = position.y;
       float dome = sqrt(max(0., 1. - pow(x / .86, 2.) - pow((y + .02) / .94, 2.)));
       float face = exp(-pow(x / .54, 4.) - pow((y + .08) / .64, 4.));
-      float nose = exp(-pow((x - .015) / .14, 2.) - pow((y + .085) / .19, 2.));
-      float z = .22 * dome + .14 * face + .18 * nose - .16;
+      float z = .26 * dome + .18 * face - .16;
       float cy = cos(turn.x), sy = sin(turn.x);
       float cp = cos(turn.y), sp = sin(turn.y);
       vec3 p = vec3(cy*x + sy*z, y, -sy*x + cy*z);
@@ -35,15 +34,37 @@
     precision mediump float;
     uniform sampler2D portrait;
     uniform vec2 gaze;
+    uniform mediump vec2 turn;
     varying vec2 uv;
     float eye(vec2 center) {
-      vec2 q = (uv - center) / vec2(.060, .036);
-      return 1. - smoothstep(.35, 1., dot(q,q));
+      vec2 q = (uv - center) / vec2(.043, .074);
+      return 1. - smoothstep(.50, 1., dot(q,q));
     }
     void main() {
-      float mask = max(eye(vec2(.419, .551)), eye(vec2(.600, .553)));
-      vec2 look = uv - gaze * vec2(.014, .009) * mask;
-      gl_FragColor = texture2D(portrait, look);
+      float mask = max(eye(vec2(.405, .483)), eye(vec2(.591, .483)));
+      vec2 look = uv - gaze * vec2(.010, .007) * mask;
+      vec4 metal = texture2D(portrait, look);
+
+      // Approximate the oval's curved surface, then reflect a movable blue
+      // environment light across it. Rotation also changes the reflection.
+      vec2 face = (uv - vec2(.50, .458)) / vec2(.216, .270);
+      vec2 head = (uv - vec2(.50, .50)) / vec2(.41, .43);
+      float faceRegion = 1. - smoothstep(.82, 1.12, length(face));
+      vec2 curve = mix(head, face, faceRegion) * .78;
+      vec3 normal = normalize(vec3(curve, sqrt(max(.08, 1. - dot(curve, curve)))));
+      float cy = cos(turn.x), sy = sin(turn.x);
+      float cp = cos(turn.y), sp = sin(turn.y);
+      normal = vec3(cy*normal.x + sy*normal.z, normal.y, -sy*normal.x + cy*normal.z);
+      normal = vec3(normal.x, cp*normal.y - sp*normal.z, sp*normal.y + cp*normal.z);
+      vec3 reflected = reflect(vec3(0., 0., -1.), normal);
+      vec3 blueLight = normalize(vec3(gaze.x * 2.4 + .22, gaze.y * 2.0 - .30, 1.0));
+      float blue = pow(max(0., dot(reflected, blueLight)), 5.0);
+      float value = dot(metal.rgb, vec3(.2126, .7152, .0722));
+      float tint = blue * (.94 - .50 * smoothstep(.70, 1., value));
+      vec3 cobalt = vec3(.022, .035, .92);
+      vec3 color = mix(metal.rgb, metal.rgb * cobalt, tint);
+      color += cobalt * blue * .18 * (1. - value);
+      gl_FragColor = vec4(color, metal.a);
     }`;
   function compile(type, source) {
     const shader = gl.createShader(type);
@@ -132,7 +153,7 @@
     toggle.hidden=!ready;
     toggle.textContent=enabled?'Pause motion':'Enable motion';
     toggle.setAttribute('aria-pressed',String(!enabled));
-    host.setAttribute('aria-label',`A cartoon portrait of Tina with wavy black hair and colorful beaded earrings.${enabled?' Her head and eyes follow your pointer.':''}`);
+    host.setAttribute('aria-label',`A polished chrome portrait of Tina with center-parted waves and beaded earrings.${enabled?' Her head, eyes and blue reflections follow your pointer.':''}`);
   }
   function setMotion(on) {
     enabled=on;

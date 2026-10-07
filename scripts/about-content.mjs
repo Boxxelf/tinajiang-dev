@@ -1,8 +1,8 @@
 export const aboutIntro = `
 <div class="about-journey">
   <div class="avatar-rail">
-    <div class="avatar-anchor" role="img" aria-label="A cartoon portrait of Tina, with wavy black hair and colorful beaded earrings. Her head and eyes follow your pointer.">
-      <img class="avatar-fallback" src="/assets/tina-avatar.webp" width="1024" height="1024" alt="" fetchpriority="high" decoding="async">
+    <div class="avatar-anchor" role="img" aria-label="A polished chrome portrait of Tina, with center-parted waves and bead earrings. Her head and eyes follow your pointer.">
+      <img class="avatar-fallback" src="/assets/tina-avatar-chrome.webp" width="1024" height="1024" alt="" fetchpriority="high" decoding="async">
       <canvas id="tina-avatar" width="700" height="700" aria-hidden="true"></canvas>
     </div>
   </div>

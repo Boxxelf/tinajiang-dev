@@ -1,0 +1,36 @@
+/* Copy follows an open curve around the fixed portrait as it crosses the stage. */
+.about-world .avatar-anchor{top:max(240px,calc(50svh - 110px))}
+.about-world .about-opening h1{top:clamp(140px,20svh,210px);bottom:auto;font-size:clamp(48px,4.6vw,68px)}
+.about-world .about-byline{top:clamp(106px,14svh,168px)}
+.about-world .about-introduction{top:74%}
+.about-flow-word{display:inline-block;vertical-align:baseline}
+@media(min-width:761px){
+ .about-world .about-introduction{width:clamp(200px,20vw,280px);left:auto;right:24px}
+ .about-world .about-flow-active .about-introduction{left:calc(50% - clamp(200px,20vw,280px)/2);right:auto;will-change:transform}
+ .about-world .chapter-heading{--flow-heading-width:clamp(210px,24vw,340px);width:var(--flow-heading-width);left:24px;right:auto}
+ .about-world .chapter-heading[data-flow-side="right"]{left:auto;right:24px}
+ .about-world .about-flow-active .chapter-heading{left:calc(50% - var(--flow-heading-width)/2);right:auto;will-change:transform}
+ .about-flow-active .chapter-copy{width:clamp(190px,18vw,250px)}
+ .about-flow-active .chapter-left{right:calc(50% + 26px)}
+ .about-flow-active .chapter-right{left:calc(50% + 26px)}
+ .about-flow-active .chapter-copy h3,.about-flow-active .chapter-copy>a{position:relative}
+ .about-flow-active .about-flow-word{will-change:transform}
+ .about-flow-active .about-chapter{min-height:820px}
+}
+@media(min-width:761px) and (max-width:900px){.about-world .avatar-anchor{top:max(250px,calc(50svh - 100px))}}
+@media(max-width:760px){
+ .about-world .avatar-rail{height:max(100svh,740px)}
+ .about-world .avatar-anchor{width:200px;height:200px;top:max(265px,calc(49svh - 100px))}
+ .about-world .about-opening{min-height:740px}
+ .about-world .about-byline{top:12%}
+ .about-world .about-opening h1{top:20%;bottom:auto;font-size:clamp(48px,10vw,70px)}
+ .about-world .about-introduction{top:72%}
+ .about-world .about-chapter{height:auto;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:28px;padding:100px 26px 70px}
+ .about-world .chapter-heading{position:static;grid-column:1/-1;margin-bottom:36px}
+ .about-world .chapter-copy{position:static;width:auto;left:auto;right:auto;top:auto;font-size:16px;text-align:left;padding-top:0}
+ .about-world .chapter-right{padding-top:60px}
+ .about-world .chapter-heading h2{font-size:clamp(30px,6vw,44px)}
+ .about-world .chapter-copy a{font-size:11px;overflow-wrap:anywhere}
+}
+@media(max-width:400px){.about-world .about-chapter{gap:20px;padding-inline:22px}.about-world .chapter-copy{font-size:15px}}
+@media(prefers-reduced-motion:reduce){.about-flow-word{transform:none!important;will-change:auto!important}}

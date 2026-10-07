@@ -1,0 +1,16 @@
+{
+  "status": "Approved by the user on 2026-10-07; blue reflection must move with the pointer.",
+  "mode": "Built-in image_gen",
+  "references": {
+    "style": "CleanShot 2026-10-07 at 1.39.45 AM@2x.png",
+    "identity": "public/assets/tina-portrait.webp"
+  },
+  "output": "design/avatar-options/tina-chrome-preview.png",
+  "prompt": "Use case: stylized-concept. Create a single NEW avatar concept for the woman in image 2, rendered in the VERY SPECIFIC minimalist liquid-chrome mascot style of image 1. Image 1 is the authoritative STYLE reference, only its metallic head, ignore its webpage text. Image 2 is the IDENTITY reference: her oval face silhouette, center-parted long wavy hair, and dangling earrings. Translate these identity cues into an abstract collectible chrome character, not a realistic human portrait. Head only, floating, front view. An extremely simple smooth rounded oval/egg face with ONLY two small vertical pill-shaped inset eyes, like the reference mascot; NO human eyeballs, no irises, no eyelashes, NO human nose or lips, no skin. Entire head, hair, and earrings made of highly polished mirror-silver liquid metal. Deep black reflections, large bright softbox highlights, a subtle cobalt-blue reflected glow on one side exactly like the style reference. Hair: center part with 6 to 8 chunky, inflated, flowing wave forms framing the oval face, smooth sculptural lobes, no strands, no grooves, no realistic hair texture. Hair silhouette suggests the woman’s wavy long hair but terminates just below the chin to keep a compact icon. Two narrow dangling earrings simplified into stacks of three rounded chrome beads, visible at the sides. Friendly and refined, sculptural, playful, fashion-design-object quality. No cartoon princess, no Disney or Pixar human, no detailed facial features, no colored skin or colored hair, no goggles. One centered complete head filling about 70 percent of a square canvas, all silhouette and earrings within frame, generous transparent margin. True transparent background. No text, no logo, no body, no base, no surrounding UI. This is a concept for the user’s approval; match the chrome sculptural language closely.",
+  "production": {
+    "source": "design/avatar-options/tina-chrome-neutral-source.png",
+    "asset": "public/assets/tina-avatar-chrome.webp",
+    "material": "Neutral grayscale chrome texture with a pointer-responsive cobalt environment reflection in web/about-avatar.js",
+    "neutral_edit_prompt": "Remove all baked-in cobalt-blue reflections from the approved avatar; preserve its exact silhouette, center-parted waves, earrings, vertical pill-shaped eyes, black and silver reflections and transparency. Replace blue with neutral silver/black of matching brightness."
+  }
+}
