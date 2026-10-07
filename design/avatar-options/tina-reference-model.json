@@ -1,11 +1,12 @@
 {
   "reference": "design/avatar-options/tina-gold-source.png",
-  "vertices": 57848,
-  "triangles": 115696,
+  "vertices": 50001,
+  "triangles": 99998,
   "closed_manifold": true,
-  "method": "Reference-contour mesh with rounded anatomical depth, photo-projected front, and reconstructed closed back",
+  "method": "Voxel-regularized closed surface with subdivision, photo-projected front and color-matched champagne rear",
+  "rear_color": "Baked smooth studio reflections, linear vertex colors, unlit material for consistent gold in external viewers",
   "front_color": "Unmodified supplied reference image",
   "unobserved_geometry": "Back and depth inferred from the single front image",
-  "runtime": "public/assets/tina-avatar-reference.bin",
-  "portable_model": "public/assets/tina-avatar-reference.glb"
+  "runtime": "public/assets/tina-avatar-reference-v2.bin",
+  "portable_model": "public/assets/tina-avatar-reference-v2.glb"
 }

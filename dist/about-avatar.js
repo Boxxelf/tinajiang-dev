@@ -28,9 +28,12 @@
     attribute vec3 position;
     attribute vec3 normal;
     attribute vec2 textureCoordinate;
+    attribute vec3 backColor;
     uniform vec2 turn;
     uniform vec2 gaze;
     varying vec2 uv;
+    varying vec3 rearColor;
+    varying float photographWeight;
     varying vec3 worldPosition;
     varying vec3 worldNormal;
     varying vec3 referenceNormal;
@@ -48,6 +51,8 @@
       float eyes=max(eye(vec2(.404,.482)),eye(vec2(.590,.482)));
       p.xy+=gaze*vec2(.032,.022)*eyes;
       uv=textureCoordinate;
+      rearColor=backColor;
+      photographWeight=smoothstep(.05,.30,position.z);
       referenceNormal=normal;
       worldPosition=rotateHead(p);
       worldNormal=normalize(rotateHead(normal));
@@ -59,6 +64,8 @@
     uniform vec2 lightPosition;
     uniform float rear;
     varying vec2 uv;
+    varying vec3 rearColor;
+    varying float photographWeight;
     varying vec3 worldPosition;
     varying vec3 worldNormal;
     varying vec3 referenceNormal;
@@ -66,9 +73,9 @@
       vec3 n=normalize(worldNormal);
       vec3 view=normalize(vec3(0.,0.,5.2)-worldPosition);
       if(rear>.5) {
-        float light=.56+.36*max(0.,dot(n,normalize(vec3(-.4,.7,1.))));
-        float rim=pow(1.-abs(dot(n,view)),3.);
-        gl_FragColor=vec4(vec3(.91,.76,.57)*light+vec3(.15,.16,.17)*rim,1.);
+        vec3 color=mix(12.92*rearColor,1.055*pow(max(rearColor,vec3(0.)),vec3(1./2.4))-.055,step(vec3(.0031308),rearColor));
+        float glint=pow(max(0.,dot(reflect(-view,n),normalize(vec3(lightPosition,1.2)))),18.)*.025*min(1.,length(lightPosition));
+        gl_FragColor=vec4(mix(color,vec3(1.,.97,.90),glint),1.);
         return;
       }
       vec4 reference=texture2D(portrait,uv);
@@ -89,7 +96,9 @@
       vec3 lamp=normalize(vec3(lightPosition*1.5,1.2));
       float glint=pow(max(0.,dot(reflected,lamp)),18.)*min(1.,length(lightPosition))*.035;
       color=mix(color,vec3(1.,.97,.90),glint);
-      gl_FragColor=vec4(clamp(color,0.,1.),reference.a);
+      vec3 gold=mix(12.92*rearColor,1.055*pow(max(rearColor,vec3(0.)),vec3(1./2.4))-.055,step(vec3(.0031308),rearColor));
+      color=mix(gold,color,photographWeight);
+      gl_FragColor=vec4(clamp(color,0.,1.),1.);
     }`;
 
   function compile(type, source) {
@@ -201,21 +210,21 @@
   async function loadModel(){
     try{
       const photo=host.querySelector('img');
-      const response=await fetch('/assets/tina-avatar-reference.bin');
+      const response=await fetch('/assets/tina-avatar-reference-v2.bin');
       if(!response.ok)throw new Error('Portrait model unavailable');
       const bytes=await response.arrayBuffer();
       const header=new Uint32Array(bytes,0,4);
-      if(header[0]!==0x54494E41)throw new Error('Invalid portrait model');
+      if(header[0]!==0x54494E42)throw new Error('Invalid portrait model');
       const count=header[1];frontCount=header[2];totalCount=header[3];
-      if(bytes.byteLength!==16+count*32+totalCount*2)throw new Error('Incomplete portrait model');
+      if(bytes.byteLength!==16+count*44+totalCount*2)throw new Error('Incomplete portrait model');
       gl.bindBuffer(gl.ARRAY_BUFFER,gl.createBuffer());
-      gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(bytes,16,count*8),gl.STATIC_DRAW);
-      for(const [name,size,offset] of [['position',3,0],['normal',3,12],['textureCoordinate',2,24]]){
+      gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(bytes,16,count*11),gl.STATIC_DRAW);
+      for(const [name,size,offset] of [['position',3,0],['normal',3,12],['textureCoordinate',2,24],['backColor',3,32]]){
         const attribute=gl.getAttribLocation(program,name);
-        gl.enableVertexAttribArray(attribute);gl.vertexAttribPointer(attribute,size,gl.FLOAT,false,32,offset);
+        gl.enableVertexAttribArray(attribute);gl.vertexAttribPointer(attribute,size,gl.FLOAT,false,44,offset);
       }
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,gl.createBuffer());
-      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(bytes,16+count*32,totalCount),gl.STATIC_DRAW);
+      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(bytes,16+count*44,totalCount),gl.STATIC_DRAW);
       await photo.decode();
       gl.bindTexture(gl.TEXTURE_2D,gl.createTexture());
       gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);

@@ -6,12 +6,15 @@ to preserve the reference's proportions. A rounded back closes every contour.
 """
 from pathlib import Path
 from collections import Counter, deque
-import json, struct
+import argparse, json, os, struct, subprocess, tempfile
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'design/avatar-options/tina-gold-source.png'
+parser = argparse.ArgumentParser()
+parser.add_argument('--relaxed-surface', type=Path, help='Reuse a surface produced by relax-avatar-surface.py')
+args = parser.parse_args()
 image = Image.open(SOURCE).convert('RGBA')
 alpha = np.asarray(image)[:, :, 3].astype(float) / 255
 height, width = alpha.shape
@@ -156,6 +159,42 @@ back_faces = np.array([[back_index[c], back_index[b], back_index[a]] for a,b,c i
 positions = np.asarray(positions, dtype=np.float32)
 texcoords = np.asarray(texcoords, dtype=np.float32)
 triangles = np.vstack((front_faces, back_faces))
+# Uniform volumetric remeshing removes the pinched marching-triangle border.
+# The reference stays untouched; only the closed geometry is regularized.
+if args.relaxed_surface:
+    relaxed = np.load(args.relaxed_surface)
+    positions, triangles = relaxed['positions'], relaxed['triangles']
+else:
+    with tempfile.TemporaryDirectory(prefix='tina-surface-') as folder:
+        source, result = Path(folder)/'input.npz', Path(folder)/'result.npz'
+        np.savez(source, positions=positions, triangles=triangles)
+        blender = os.environ.get('TINA_BLENDER', '/Applications/Blender.app/Contents/MacOS/Blender')
+        subprocess.run([blender, '--background', '--factory-startup', '--python',
+                        str(ROOT/'scripts/relax-avatar-surface.py'), '--', str(source), str(result)], check=True)
+        relaxed = np.load(result)
+        positions, triangles = relaxed['positions'], relaxed['triangles']
+# Project the regularized surface back onto the unmodified approved portrait.
+uv = np.column_stack((positions[:,0]/(2*scale*camera/focal)+.5,
+                      .5-positions[:,1]/(2*scale*camera/focal)))
+# Avoid transparent edge pixels when remeshing moves a vertex just outside the
+# source silhouette. Nearest interior sampling preserves a clean gold rim.
+interior = np.asarray(image.getchannel('A').filter(ImageFilter.MinFilter(7))) > 250
+pixel = np.rint(uv*[width-1,height-1]).astype(int)
+pixel[:,0] = np.clip(pixel[:,0],0,width-1); pixel[:,1] = np.clip(pixel[:,1],0,height-1)
+invalid = np.where(~interior[pixel[:,1],pixel[:,0]])[0]
+border = interior & ~(np.roll(interior,1,0)&np.roll(interior,-1,0)&np.roll(interior,1,1)&np.roll(interior,-1,1))
+candidates = np.column_stack(np.where(border)[::-1])
+for start in range(0,len(invalid),128):
+    indices = invalid[start:start+128]
+    delta = pixel[indices,None,:]-candidates[None,:,:]
+    pixel[indices] = candidates[np.argmin(np.sum(delta*delta,axis=2),axis=1)]
+    uv[indices] = pixel[indices]/[width-1,height-1]
+texcoords = np.column_stack((uv[:,0],1-uv[:,1])).astype(np.float32)
+# Keep photograph projection on the visible face; wrap the edge and entire rear
+# in a matching champagne studio finish, independent of the viewer's lighting.
+is_front = positions[triangles,2].mean(axis=1) >= .045
+front_faces, back_faces = triangles[is_front], triangles[~is_front]
+triangles = np.vstack((front_faces,back_faces))
 normals = np.zeros_like(positions)
 face_normals = np.cross(positions[triangles[:,1]]-positions[triangles[:,0]], positions[triangles[:,2]]-positions[triangles[:,0]])
 for corner in range(3): np.add.at(normals, triangles[:,corner], face_normals)
@@ -163,10 +202,44 @@ normals /= np.maximum(np.linalg.norm(normals, axis=1, keepdims=True), 1e-10)
 assert np.all(np.isfinite(normals)) and len(positions) < 65536
 closed_edges = Counter(tuple(sorted((int(f[i]),int(f[(i+1)%3])))) for f in triangles for i in range(3))
 assert all(count == 2 for count in closed_edges.values()), 'Mesh is not closed'
-interleaved = np.column_stack((positions,normals,texcoords)).astype('<f4')
+# Bake broad, smooth studio reflections into rear vertex colors. A color-matched
+# band joins the photograph at the front edge, avoiding a grey material seam.
+x,y,z = positions.T
+nx,ny,nz = normals.T
+reflection = .52 + .17*np.cos(nx*6.0+ny*2.5) + .12*np.sin(ny*7-nx*2)
+reflection += .22*np.exp(-((nx+.48)/.22)**2) + .20*np.exp(-((ny-.62)/.26)**2)
+reflection = np.clip(reflection,.16,1.)
+stops = np.array([0.,.30,.52,.72,.90,1.])
+palette = np.array([[.32,.25,.18],[.53,.43,.32],[.72,.60,.46],
+                    [.87,.76,.59],[.99,.93,.80],[1.,.985,.92]])
+rear_srgb = np.column_stack([np.interp(reflection,stops,palette[:,c]) for c in range(3)])
+# Sample a neighborhood for side colors, rather than extending individual
+# high-contrast edge pixels into long stripes across the side of the model.
+rgba = np.asarray(image).astype(float)/255.
+weighted = np.dstack((rgba[:,:,:3]*rgba[:,:,3:4],rgba[:,:,3]))
+integral = np.pad(weighted,((1,0),(1,0),(0,0))).cumsum(0).cumsum(1)
+px,py = pixel.T; radius=24
+x0,x1=np.maximum(px-radius,0),np.minimum(px+radius+1,width)
+y0,y1=np.maximum(py-radius,0),np.minimum(py+radius+1,height)
+area=integral[y1,x1]-integral[y0,x1]-integral[y1,x0]+integral[y0,x0]
+source_rgb=area[:,:3]/np.maximum(area[:,3:4],1e-6)
+blend = np.clip((.30-z)/.48,0,1)
+blend = blend*blend*(3-2*blend)
+rear_srgb = source_rgb*(1-blend[:,None])+rear_srgb*blend[:,None]
+# Diffuse any residual contour sampling noise along the continuous surface.
+links = np.asarray(list(closed_edges),dtype=int)
+degree = np.bincount(links.ravel(),minlength=len(positions))
+for _ in range(24):
+    summed=np.zeros_like(rear_srgb)
+    np.add.at(summed,links[:,0],rear_srgb[links[:,1]])
+    np.add.at(summed,links[:,1],rear_srgb[links[:,0]])
+    rear_srgb=rear_srgb*.35+summed/degree[:,None]*.65
+# glTF vertex colors are linear; WebGL converts them to display sRGB explicitly.
+rear_colors = np.where(rear_srgb<=.04045,rear_srgb/12.92,((rear_srgb+.055)/1.055)**2.4).astype('<f4')
+interleaved = np.column_stack((positions,normals,texcoords,rear_colors)).astype('<f4')
 indices = triangles.flatten().astype('<u2')
 assets = ROOT / 'public/assets'
-(assets/'tina-avatar-reference.bin').write_bytes(struct.pack('<4I',0x54494E41,len(positions),front_faces.size,indices.size)+interleaved.tobytes()+indices.tobytes())
+(assets/'tina-avatar-reference-v2.bin').write_bytes(struct.pack('<4I',0x54494E42,len(positions),front_faces.size,indices.size)+interleaved.tobytes()+indices.tobytes())
 
 # A portable GLB is also retained for editing/inspection outside the website.
 blob = bytearray(); views = []; accessors = []
@@ -182,22 +255,31 @@ def accessor(array, component, kind, bounds=False):
     if bounds: item.update(min=array.min(axis=0).tolist(),max=array.max(axis=0).tolist())
     accessors.append(item); return len(accessors)-1
 p=accessor(positions,5126,'VEC3',True); n=accessor(normals,5126,'VEC3')
+# A feathered photograph overlay covers the gold base. This removes a visible
+# material boundary without stretching edge pixels onto the sides.
+overlay_positions=(positions+normals*.0006).astype('<f4')
+pf=accessor(overlay_positions,5126,'VEC3',True)
+opacity=np.clip((positions[:,2]-.05)/.25,0,1)
+opacity=opacity*opacity*(3-2*opacity)
+overlay_color=np.column_stack((np.ones((len(positions),3)),opacity)).astype('<f4')
+cfront=accessor(overlay_color,5126,'VEC4')
 # glTF image convention uses downward V.
 gltf_uv=texcoords.copy(); gltf_uv[:,1]=1-gltf_uv[:,1]
 t=accessor(gltf_uv.astype('<f4'),5126,'VEC2')
+c=accessor(rear_colors,5126,'VEC3')
 f=accessor(front_faces.flatten().astype('<u2'),5123,'SCALAR')
-b=accessor(back_faces.flatten().astype('<u2'),5123,'SCALAR')
+b=accessor(triangles.flatten().astype('<u2'),5123,'SCALAR')
 img=add_view(SOURCE.read_bytes())
 document={'asset':{'version':'2.0','generator':'Tina reference-contour reconstruction'},'scene':0,'scenes':[{'nodes':[0]}],
  'nodes':[{'mesh':0,'name':'Tina — reference-matched champagne portrait'}],
- 'meshes':[{'primitives':[{'attributes':{'POSITION':p,'NORMAL':n,'TEXCOORD_0':t},'indices':f,'material':0},{'attributes':{'POSITION':p,'NORMAL':n},'indices':b,'material':1}]}],
- 'materials':[{'name':'Approved photograph — exact front color','extensions':{'KHR_materials_unlit':{}},'pbrMetallicRoughness':{'baseColorTexture':{'index':0},'metallicFactor':0,'roughnessFactor':.22}},
- {'name':'Reconstructed champagne back','pbrMetallicRoughness':{'baseColorFactor':[.77,.61,.43,1],'metallicFactor':.78,'roughnessFactor':.20}}],
+ 'meshes':[{'primitives':[{'attributes':{'POSITION':pf,'NORMAL':n,'TEXCOORD_0':t,'COLOR_0':cfront},'indices':f,'material':0},{'attributes':{'POSITION':p,'NORMAL':n,'COLOR_0':c},'indices':b,'material':1}]}],
+ 'materials':[{'name':'Approved photograph — feathered front color','alphaMode':'BLEND','extensions':{'KHR_materials_unlit':{}},'pbrMetallicRoughness':{'baseColorTexture':{'index':0},'metallicFactor':0,'roughnessFactor':.22}},
+ {'name':'Continuous champagne side and back','extensions':{'KHR_materials_unlit':{}},'pbrMetallicRoughness':{'baseColorFactor':[1,1,1,1],'metallicFactor':0,'roughnessFactor':.20}}],
  'extensionsUsed':['KHR_materials_unlit'],'textures':[{'source':0,'sampler':0}],'samplers':[{'magFilter':9729,'minFilter':9987,'wrapS':33071,'wrapT':33071}],
  'images':[{'bufferView':img,'mimeType':'image/png'}],'buffers':[{'byteLength':len(blob)}],'bufferViews':views,'accessors':accessors}
 js=json.dumps(document,separators=(',',':')).encode(); js+=b' '*((-len(js))%4); blob+=b'\0'*((-len(blob))%4)
 total=12+8+len(js)+8+len(blob)
-(assets/'tina-avatar-reference.glb').write_bytes(struct.pack('<III',0x46546C67,2,total)+struct.pack('<II',len(js),0x4E4F534A)+js+struct.pack('<II',len(blob),0x004E4942)+blob)
-report={'reference':str(SOURCE.relative_to(ROOT)),'vertices':len(positions),'triangles':len(triangles),'closed_manifold':True,'method':'Reference-contour mesh with rounded anatomical depth, photo-projected front, and reconstructed closed back','front_color':'Unmodified supplied reference image','unobserved_geometry':'Back and depth inferred from the single front image','runtime':'public/assets/tina-avatar-reference.bin','portable_model':'public/assets/tina-avatar-reference.glb'}
+(assets/'tina-avatar-reference-v2.glb').write_bytes(struct.pack('<III',0x46546C67,2,total)+struct.pack('<II',len(js),0x4E4F534A)+js+struct.pack('<II',len(blob),0x004E4942)+blob)
+report={'reference':str(SOURCE.relative_to(ROOT)),'vertices':len(positions),'triangles':len(triangles),'closed_manifold':True,'method':'Voxel-regularized closed surface with subdivision, photo-projected front and color-matched champagne rear', 'rear_color':'Baked smooth studio reflections, linear vertex colors, unlit material for consistent gold in external viewers','front_color':'Unmodified supplied reference image','unobserved_geometry':'Back and depth inferred from the single front image','runtime':'public/assets/tina-avatar-reference-v2.bin','portable_model':'public/assets/tina-avatar-reference-v2.glb'}
 (ROOT/'design/avatar-options/tina-reference-model.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report,indent=2))
