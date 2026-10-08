@@ -71,7 +71,9 @@
       });
     }
     measuring=false;
-    schedule();
+    // Restore transformed positions before this measurement frame can paint.
+    if(frame)cancelAnimationFrame(frame);
+    draw();
   }
   function draw(){
     frame=0;
@@ -88,25 +90,21 @@
     const rect=avatar.getBoundingClientRect();
     const centerX=rect.left+rect.width/2,centerY=rect.top+rect.height/2;
     const margin=mobile?16:24;
-    const radiusY=mobile?rect.height*.50+12:rect.height*.62+24;
-    const radiusX=mobile?rect.width*.50+10:rect.width*.52+26;
-    const amplitude=rect.width*(mobile?.48:.64),spread=radiusY*.96;
-    function edgeAt(dy,halfLine=0){
-      if(!mobile)return radiusX*Math.sqrt(Math.max(0,1-(dy/radiusY)**2));
-      const clearance=Math.max(0,Math.abs(dy)-halfLine);
-      const t=clamp((clearance-rect.height/2-4)/40,0,1);
-      return radiusX*(1-t*t*(3-2*t));
+    const radiusX=rect.width*.50+(mobile?12:26);
+    const spread=rect.height*.70+(mobile?12:24);
+    // One continuous bell curve, with no flat exclusion wall or threshold.
+    // Limit the peak before applying the curve: clipping the result instead
+    // creates a straight-sided plateau on narrow screens.
+    function offsetAt(dy,left,right,direction,halfHeight){
+      const innerGap=direction<0?centerX-right:left-centerX;
+      const available=direction<0?left-margin:viewport-margin-right;
+      const peak=clamp(radiusX-innerGap,0,Math.max(0,available));
+      const radius=spread+halfHeight;
+      return direction*peak*Math.exp(-.5*(dy/radius)**2);
     }
     for(const line of lines){
       const y=line.top-scroll+line.height/2;
-      const dy=y-centerY;
-      // A broad bell-shaped curve makes the approach and return gradual.
-      let distance=amplitude*Math.exp(-.5*(dy/spread)**2);
-      const edge=edgeAt(dy,line.height/2);
-      const required=line.direction<0?line.right-(centerX-edge):(centerX+edge)-line.left;
-      if(Math.abs(dy)<radiusY+line.height/2) distance=Math.max(distance,required);
-      const available=line.direction<0?line.left-margin:viewport-margin-line.right;
-      const offset=line.direction*clamp(distance,0,Math.max(0,available));
+      const offset=offsetAt(y-centerY,line.left,line.right,line.direction,line.height/2);
       const transform=`translate3d(${offset.toFixed(2)}px,0,0)`;
       if(line.transform!==transform){
         for(const word of line.words)word.style.transform=transform;
@@ -114,22 +112,13 @@
       }
     }
     for(const heading of headingBounds){
-      const top=heading.top-scroll,bottom=top+heading.height;
-      // Use the closest edge of the full heading, so every line of the title
-      // clears the portrait while its typography remains a coherent group.
-      const dy=centerY<top?top-centerY:centerY>bottom?bottom-centerY:0;
-      const edge=edgeAt(dy);
-      let distance=(heading.width/2+radiusX+6)*Math.exp(-.5*(dy/(spread+heading.height*.2))**2);
-      const required=heading.direction<0?heading.right-(centerX-edge):(centerX+edge)-heading.left;
-      if(Math.abs(dy)<radiusY) distance=Math.max(distance,required);
-      // The introduction starts exactly centered. Its first movement belongs
-      // to scrolling, not to the distant tail of the avoidance curve.
+      const y=heading.top-scroll+heading.height/2;
+      let offset=offsetAt(y-centerY,heading.left,heading.right,heading.direction,heading.height/2);
+      // The introduction starts exactly centered, then joins the same curve.
       if(heading.element===introduction){
         const arrival=clamp((scroll-24)/120,0,1);
-        distance*=arrival*arrival*(3-2*arrival);
+        offset*=arrival*arrival*(3-2*arrival);
       }
-      const available=heading.direction<0?heading.left-margin:viewport-margin-heading.right;
-      const offset=heading.direction*clamp(distance,0,Math.max(0,available));
       heading.element.style.transform=`translate3d(${offset.toFixed(2)}px,0,0)`;
     }
   }
