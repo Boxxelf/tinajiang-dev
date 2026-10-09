@@ -794,5 +794,21 @@
   "/assets/rewind-card-brand.svg": [
     1200,
     1600
+  ],
+  "/assets/rewind-cover-editorial.webp": [
+    1672,
+    941
+  ],
+  "/assets/rewind-cover-editorial-thumb.webp": [
+    420,
+    236
+  ],
+  "/assets/rewind-card-editorial.webp": [
+    1086,
+    1448
+  ],
+  "/assets/rewind-card-editorial-thumb.webp": [
+    420,
+    560
   ]
 }
