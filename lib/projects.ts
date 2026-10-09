@@ -1,4 +1,4 @@
-export type Project={slug:string;title:string;category:string;year:string;tagline:string;image:string;alt:string;role:string;tools?:string;team?:string;intro:string;sections:{title:string;text:string;image?:string;caption?:string;video?:string;poster?:string;videoCaption?:string}[];link?:string;linkLabel?:string;nda?:boolean;platform?:string;duration?:string;context?:string;gallery?:string[];resources?:{label:string;href:string}[]};
+export type Project={slug:string;title:string;category:string;year:string;tagline:string;image:string;alt:string;role:string;tools?:string;team?:string;intro:string;sections:{title:string;text:string;image?:string;caption?:string;video?:string;poster?:string;videoCaption?:string;videoWidth?:number;videoHeight?:number}[];link?:string;linkLabel?:string;nda?:boolean;platform?:string;duration?:string;context?:string;cardImage?:string;gallery?:string[];resources?:{label:string;href:string}[]};
 export const projects:Project[]=
 [
   {
@@ -266,16 +266,27 @@ export const projects:Project[]=
     "title": "Rewind",
     "category": "Native iOS product",
     "year": "2026",
-    "tagline": "Rediscover a memory. Make a little space.",
-    "image": "/assets/rewind-slide-1.webp",
-    "alt": "Rewind lock-screen widget, memory deck, Later Stack, and similar-photo tray",
+    "tagline": "Keep the memories. Make room for more.",
+    "image": "/assets/rewind-cover-v2.webp",
+    "cardImage": "/assets/rewind-card-v2.webp",
+    "alt": "Rewind brand artwork with a mint rewind mark, iPhone, and photo memories",
     "role": "Solo Designer & Developer",
     "tools": "SwiftUI, SwiftData, PhotoKit, Vision, AVFoundation",
     "team": "Tina Jiang",
     "intro": "An on-device iOS app that turns photo cleanup into short sessions of rediscovery. I designed and built Rewind around finite decks, reversible decisions, and personal memories. Second place at Reverie Hacks 2026.",
     "link": "https://devpost.com/software/1-ns94yj",
     "linkLabel": "View Rewind on Devpost",
+    "resources": [{"label":"View source and brand assets on GitHub","href":"https://github.com/Boxxelf/Rewind"}],
     "sections": [
+      {
+        "title": "Meet Rewind.",
+        "text": "A fresh deck of familiar moments. Keep the good ones, set a few aside, and review what you’re ready to let go.",
+        "video": "/assets/rewind-film-v2.mp4",
+        "poster": "/assets/rewind-cover-v2.webp",
+        "videoWidth": 1920,
+        "videoHeight": 1080,
+        "videoCaption": "29-second product film · English titles · Music. Delete selections are staged for review before system confirmation."
+      },
       {
         "title": "One deck. One chapter.",
         "text": "Each deck contains 20–30 photos, screenshots, or videos. Age-weighted sampling brings older memories back into view. Four swipe directions let people keep, skip, stage for deletion, or defer an item to a Later Stack."
