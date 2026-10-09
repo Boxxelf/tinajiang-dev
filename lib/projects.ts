@@ -1,4 +1,4 @@
-export type Project={slug:string;title:string;category:string;year:string;tagline:string;image:string;alt:string;role:string;tools?:string;team?:string;intro:string;sections:{title:string;text:string;image?:string;caption?:string;video?:string;poster?:string;videoCaption?:string;videoWidth?:number;videoHeight?:number}[];link?:string;linkLabel?:string;nda?:boolean;platform?:string;duration?:string;context?:string;cardImage?:string;gallery?:string[];resources?:{label:string;href:string}[]};
+export type Project={slug:string;title:string;category:string;year:string;tagline:string;image:string;alt:string;role:string;tools?:string;team?:string;intro:string;sections:{title:string;text:string;image?:string;caption?:string;video?:string;poster?:string;videoCaption?:string;videoWidth?:number;videoHeight?:number}[];link?:string;linkLabel?:string;nda?:boolean;platform?:string;duration?:string;context?:string;cardImage?:string;cardAlt?:string;gallery?:string[];resources?:{label:string;href:string}[]};
 export const projects:Project[]=
 [
   {
@@ -268,7 +268,8 @@ export const projects:Project[]=
     "year": "2026",
     "tagline": "Keep the memories. Make room for more.",
     "image": "/assets/rewind-cover-v2.webp",
-    "cardImage": "/assets/rewind-card-v2.webp",
+    "cardImage": "/assets/rewind-card-brand.svg",
+    "cardAlt": "Rewind logo in cream and mint on a forest green background",
     "alt": "Rewind brand artwork with a mint rewind mark, iPhone, and photo memories",
     "role": "Solo Designer & Developer",
     "tools": "SwiftUI, SwiftData, PhotoKit, Vision, AVFoundation",
