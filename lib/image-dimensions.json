@@ -835,24 +835,20 @@
     2000,
     1250
   ],
-  "/assets/alvin-experience.webp": [
-    2000,
-    1250
-  ],
-  "/assets/alvin-footer.webp": [
-    2000,
-    1250
-  ],
   "/assets/alvin-magic.webp": [
     2000,
     1250
   ],
-  "/assets/alvin-footer-thumb.webp": [
-    640,
-    400
-  ],
   "/assets/alvin-intro-poster.webp": [
     2000,
     1250
+  ],
+  "/assets/alvin-cover.webp": [
+    1200,
+    1600
+  ],
+  "/assets/alvin-cover-thumb.webp": [
+    480,
+    640
   ]
 }

@@ -690,23 +690,23 @@ export const projects:Project[]=
   },
   {
     "slug": "alvin-wong-website",
-    "title": "Alvin Wong — Portfolio Website",
+    "title": "Alvin Wong personal website",
     "category": "Web design",
     "year": "2026",
     "tagline": "A UX portfolio with a little sleight of hand.",
-    "image": "/assets/alvin-footer.webp",
-    "alt": "Alvin Wong website closing screen with his name set large above expandable contact sections",
+    "image": "",
+    "alt": "",
+    "cardImage": "/assets/alvin-cover.webp",
+    "cardAlt": "“A Little Magic” set in warped white type on black, from Alvin Wong’s website",
     "role": "Web & Interaction Design",
     "platform": "Website",
     "intro": "A personal website for Alvin Wong, a high school UX designer, magician, and Magic Club officer from Eastvale, California. The single scrolling page introduces his design process, two product case studies, and the community work around it, using bold typography and scroll-driven motion to give a student portfolio the feel of a performance.",
     "link": "https://alvinwong.vercel.app/",
     "linkLabel": "Visit the live site",
     "gallery": [
-      "/assets/alvin-experience.webp",
       "/assets/alvin-catalyst-screens.webp",
       "/assets/alvin-card-binder-screens.webp",
-      "/assets/alvin-cava.webp",
-      "/assets/alvin-footer.webp"
+      "/assets/alvin-cava.webp"
     ],
     "sections": [
       {
@@ -728,9 +728,7 @@ export const projects:Project[]=
       },
       {
         "title": "Experience and projects at a glance.",
-        "text": "Experience and projects are set as compact tables with dates, roles, places, and tools. They give a quick overview before the case studies, and the navigation follows the visitor’s place on the page.",
-        "image": "/assets/alvin-experience.webp",
-        "caption": "Experience and project tables on a dark background."
+        "text": "Experience and projects are set as compact tables with dates, roles, places, and tools. They give a quick overview before the case studies, and the navigation follows the visitor’s place on the page."
       },
       {
         "title": "Two products, shown in context.",
