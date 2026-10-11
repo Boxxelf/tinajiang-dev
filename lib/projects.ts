@@ -687,6 +687,75 @@ export const projects:Project[]=
         "caption": "A pull quote and studio photographs continue the editorial rhythm. Photography in the source page is credited to Luke Johnson."
       }
     ]
+  },
+  {
+    "slug": "alvin-wong-website",
+    "title": "Alvin Wong — Portfolio Website",
+    "category": "Web design",
+    "year": "2026",
+    "tagline": "A UX portfolio with a little sleight of hand.",
+    "image": "/assets/alvin-home.webp",
+    "alt": "Alvin Wong website opening with his name set in a warped, flowing headline",
+    "role": "Web & Interaction Design",
+    "platform": "Website",
+    "intro": "A personal website for Alvin Wong, a high school UX designer, magician, and Magic Club officer from Eastvale, California. The single scrolling page introduces his design process, two product case studies, and the community work around it, using bold typography and scroll-driven motion to give a student portfolio the feel of a performance.",
+    "link": "https://alvinwong.vercel.app/",
+    "linkLabel": "Visit the live site",
+    "gallery": [
+      "/assets/alvin-home.webp",
+      "/assets/alvin-class.webp",
+      "/assets/alvin-experience.webp",
+      "/assets/alvin-catalyst-screens.webp",
+      "/assets/alvin-card-binder-screens.webp",
+      "/assets/alvin-cava.webp",
+      "/assets/alvin-footer.webp"
+    ],
+    "sections": [
+      {
+        "title": "An opening that performs.",
+        "text": "The site opens on Alvin’s name, which bends and stretches as the visitor scrolls, then gives way to short statements set large on a white page: who he is, when he graduates, and what he designs. The type moves at the pace of the scroll, so the introduction reads like a sequence of reveals instead of a block of text.",
+        "video": "/assets/alvin-intro.mp4",
+        "poster": "/assets/alvin-home.webp",
+        "videoCaption": "Opening sequence from the warped name to the introduction. Silent screen recording.",
+        "videoWidth": 1600,
+        "videoHeight": 1000
+      },
+      {
+        "title": "A short, honest introduction.",
+        "text": "The About section pairs a few plain paragraphs with photographs from Magic Club. It covers how Alvin works, from research and FigJam wireframes to clickable prototypes, and what he is looking for next, so a recruiter or teacher can get the essentials quickly.",
+        "image": "/assets/alvin-about.webp",
+        "caption": "The About section sets a brief biography beside Magic Club photographs."
+      },
+      {
+        "title": "Three principles, full screen.",
+        "text": "User first, clear design, and a little magic each get a full black screen. The words warp in and out with the scroll, which is a small nod to sleight of hand and also a pause between the introduction and the work.",
+        "image": "/assets/alvin-principles.webp",
+        "caption": "“Clear Design”, one of three full-screen principles."
+      },
+      {
+        "title": "Experience and projects at a glance.",
+        "text": "Experience and projects are set as compact tables with dates, roles, places, and tools. They give a quick overview before the case studies, and the navigation follows the visitor’s place on the page.",
+        "image": "/assets/alvin-experience.webp",
+        "caption": "Experience and project tables on a dark background."
+      },
+      {
+        "title": "Two products, shown in context.",
+        "text": "Catalyst, a career navigation platform, and Card Binder, an iOS app for trading card collectors, each get a large title, a short summary, and a link to Figma or GitHub. Below that, the screens are grouped by desktop, mobile, and individual pages so visitors can see the scope of each design.",
+        "video": "/assets/alvin-projects.mp4",
+        "poster": "/assets/alvin-catalyst.webp",
+        "videoCaption": "Scrolling through the Catalyst and Card Binder case studies. Silent screen recording.",
+        "videoWidth": 1600,
+        "videoHeight": 1000,
+        "image": "/assets/alvin-card-binder.webp",
+        "caption": "Card Binder pairs a short summary with device mockups of the app."
+      },
+      {
+        "title": "The life around the work.",
+        "text": "The last part of the page turns to Magic Club and CAVA volunteering. Black-and-white photo collages and short captions show the leadership and community side of Alvin’s experience. The page closes by repeating his name, followed by expandable sections for what he is looking for, education, tools, and contact details.",
+        "image": "/assets/alvin-magic.webp",
+        "caption": "Magic Club at Eleanor Roosevelt High School in a black-and-white photo collage."
+      }
+    ]
   }
 ];
 export const artWorks=

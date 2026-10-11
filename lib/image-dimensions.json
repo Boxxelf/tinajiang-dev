@@ -814,5 +814,57 @@
   "/assets/rewind-card-cream.svg": [
     1200,
     1600
+  ],
+  "/assets/alvin-about.webp": [
+    2000,
+    1250
+  ],
+  "/assets/alvin-card-binder-screens.webp": [
+    2000,
+    1250
+  ],
+  "/assets/alvin-card-binder.webp": [
+    2000,
+    1250
+  ],
+  "/assets/alvin-catalyst-screens.webp": [
+    2000,
+    1250
+  ],
+  "/assets/alvin-catalyst.webp": [
+    2000,
+    1250
+  ],
+  "/assets/alvin-cava.webp": [
+    2000,
+    1250
+  ],
+  "/assets/alvin-class.webp": [
+    2000,
+    1250
+  ],
+  "/assets/alvin-experience.webp": [
+    2000,
+    1250
+  ],
+  "/assets/alvin-footer.webp": [
+    2000,
+    1250
+  ],
+  "/assets/alvin-home-thumb.webp": [
+    640,
+    400
+  ],
+  "/assets/alvin-home.webp": [
+    2000,
+    1250
+  ],
+  "/assets/alvin-magic.webp": [
+    2000,
+    1250
+  ],
+  "/assets/alvin-principles.webp": [
+    2000,
+    1250
   ]
 }
