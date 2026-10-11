@@ -815,10 +815,6 @@
     1200,
     1600
   ],
-  "/assets/alvin-about.webp": [
-    2000,
-    1250
-  ],
   "/assets/alvin-card-binder-screens.webp": [
     2000,
     1250
@@ -839,10 +835,6 @@
     2000,
     1250
   ],
-  "/assets/alvin-class.webp": [
-    2000,
-    1250
-  ],
   "/assets/alvin-experience.webp": [
     2000,
     1250
@@ -851,19 +843,15 @@
     2000,
     1250
   ],
-  "/assets/alvin-home-thumb.webp": [
-    640,
-    400
-  ],
-  "/assets/alvin-home.webp": [
-    2000,
-    1250
-  ],
   "/assets/alvin-magic.webp": [
     2000,
     1250
   ],
-  "/assets/alvin-principles.webp": [
+  "/assets/alvin-footer-thumb.webp": [
+    640,
+    400
+  ],
+  "/assets/alvin-intro-poster.webp": [
     2000,
     1250
   ]

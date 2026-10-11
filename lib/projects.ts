@@ -694,16 +694,14 @@ export const projects:Project[]=
     "category": "Web design",
     "year": "2026",
     "tagline": "A UX portfolio with a little sleight of hand.",
-    "image": "/assets/alvin-home.webp",
-    "alt": "Alvin Wong website opening with his name set in a warped, flowing headline",
+    "image": "/assets/alvin-footer.webp",
+    "alt": "Alvin Wong website closing screen with his name set large above expandable contact sections",
     "role": "Web & Interaction Design",
     "platform": "Website",
     "intro": "A personal website for Alvin Wong, a high school UX designer, magician, and Magic Club officer from Eastvale, California. The single scrolling page introduces his design process, two product case studies, and the community work around it, using bold typography and scroll-driven motion to give a student portfolio the feel of a performance.",
     "link": "https://alvinwong.vercel.app/",
     "linkLabel": "Visit the live site",
     "gallery": [
-      "/assets/alvin-home.webp",
-      "/assets/alvin-class.webp",
       "/assets/alvin-experience.webp",
       "/assets/alvin-catalyst-screens.webp",
       "/assets/alvin-card-binder-screens.webp",
@@ -715,22 +713,18 @@ export const projects:Project[]=
         "title": "An opening that performs.",
         "text": "The site opens on Alvin’s name, which bends and stretches as the visitor scrolls, then gives way to short statements set large on a white page: who he is, when he graduates, and what he designs. The type moves at the pace of the scroll, so the introduction reads like a sequence of reveals instead of a block of text.",
         "video": "/assets/alvin-intro.mp4",
-        "poster": "/assets/alvin-home.webp",
+        "poster": "/assets/alvin-intro-poster.webp",
         "videoCaption": "Opening sequence from the warped name to the introduction. Silent screen recording.",
         "videoWidth": 1600,
         "videoHeight": 1000
       },
       {
         "title": "A short, honest introduction.",
-        "text": "The About section pairs a few plain paragraphs with photographs from Magic Club. It covers how Alvin works, from research and FigJam wireframes to clickable prototypes, and what he is looking for next, so a recruiter or teacher can get the essentials quickly.",
-        "image": "/assets/alvin-about.webp",
-        "caption": "The About section sets a brief biography beside Magic Club photographs."
+        "text": "The About section pairs a few plain paragraphs with photographs from Magic Club. It covers how Alvin works, from research and FigJam wireframes to clickable prototypes, and what he is looking for next, so a recruiter or teacher can get the essentials quickly."
       },
       {
         "title": "Three principles, full screen.",
-        "text": "User first, clear design, and a little magic each get a full black screen. The words warp in and out with the scroll, which is a small nod to sleight of hand and also a pause between the introduction and the work.",
-        "image": "/assets/alvin-principles.webp",
-        "caption": "“Clear Design”, one of three full-screen principles."
+        "text": "User first, clear design, and a little magic each get a full black screen. The words warp in and out with the scroll, which is a small nod to sleight of hand and also a pause between the introduction and the work."
       },
       {
         "title": "Experience and projects at a glance.",
