@@ -237,10 +237,10 @@ export const projects:Project[]=
       },
       {
         "title": "Designing for presence.",
-        "text": "The interaction design explores object handling, proximity triggers, spatial prompts, and paced scene transitions on Meta Quest 3S. The accompanying design and technical documents outline how narrative events, audio, and scene state work together."
+        "text": "The interaction design explores object handling, proximity triggers, spatial prompts, and paced scene transitions on Meta Quest 2, 3, and 3S. The accompanying design and technical documents outline how narrative events, audio, and scene state work together."
       }
     ],
-    "platform": "Meta Quest 3S",
+    "platform": "Meta Quest 2, 3, and 3S",
     "context": "CTAN 504L · Professor Eric Hanson",
     "gallery": [
       "/assets/wonder-archive-1.webp",
@@ -252,7 +252,9 @@ export const projects:Project[]=
       "/assets/wonder-archive-7.webp",
       "/assets/wonder-archive-8.webp",
       "/assets/wonder-archive-9.webp",
-      "/assets/wonder-archive-10.webp"
+      "/assets/wonder-archive-10.webp",
+      "/assets/wonder-character-1.webp",
+      "/assets/wonder-character-2.webp"
     ],
     "resources": [
       {
