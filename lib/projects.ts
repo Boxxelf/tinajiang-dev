@@ -243,6 +243,24 @@ export const projects:Project[]=
         "caption": "Character design: the daughter as a working adult (left) and as a schoolgirl (right)."
       },
       {
+        "title": "From sheet to sculpt.",
+        "text": "Both characters were rebuilt in 3D from their painted sheets. Dad keeps his cane, tote, lanyard, and leather jacket. The adult daughter keeps her red neckerchief, belted trousers, and shoulder bag.",
+        "image": "/assets/wonder-3d-lineup.webp",
+        "caption": "Dad and the adult daughter, modeled side by side in Blender."
+      },
+      {
+        "title": "Clay first, then color.",
+        "text": "Clay renders test Dad’s silhouette, posture, and upward, slightly lost smile before any material goes on. The finished renders stay close to the sheets, with soft skin tones and the same limited palette.",
+        "image": "/assets/wonder-3d-renders.webp",
+        "caption": "Clay passes of Dad (left two), then the finished renders of Dad and the daughter."
+      },
+      {
+        "title": "The moments he holds on to.",
+        "text": "Warm two-tone sketches explore the memories behind the story: standing together on an ordinary street, leaning in for a photo, a kiss on the cheek. They are the kind of small moments the experience asks the player to notice before they slip away.",
+        "image": "/assets/wonder-memory-sketches.webp",
+        "caption": "Memory sketches of Dad with the people he loves."
+      },
+      {
         "title": "Telling a story through what changes.",
         "text": "Everyday objects, phone calls, and environmental details carry the narrative. Contradictions in time and place invite the player to notice what feels different, while the story unfolds through exploration rather than a constant stream of explanation."
       },
