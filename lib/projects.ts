@@ -233,7 +233,7 @@ export const projects:Project[]=
       {
         "title": "Meet Dad, the player.",
         "text": "The player is a retired engineer in his seventies who has lived with Alzheimer’s for nearly ten years. With his cap, glasses, cane, and a lanyard of house keys, he is gentle, polite, and easily puzzled. He still believes it is a morning twenty years ago. The player sees through his eyes and hears his inner voice.",
-        "image": "/assets/wonder-character-1.webp",
+        "image": "/assets/wonder-character-dad.webp",
         "caption": "Character design: Dad, the protagonist the player embodies."
       },
       {
