@@ -222,6 +222,18 @@ export const projects:Project[]=
     "intro": "Wonder of You is a first-person narrative VR project exploring memory, loss, and love through the perspective of a fictional person living with Alzheimer’s disease. Familiar interiors give way to dreamlike spaces, making uncertainty part of the experience.",
     "sections": [
       {
+        "title": "Meet Dad, the player.",
+        "text": "The player is a retired engineer in his seventies who has lived with Alzheimer’s for nearly ten years. With his cap, glasses, cane, and a lanyard of house keys, he is gentle, polite, and easily puzzled. He still believes it is a morning twenty years ago. The player sees through his eyes and hears his inner voice.",
+        "image": "/assets/wonder-character-1.webp",
+        "caption": "Character design: Dad, the protagonist the player embodies."
+      },
+      {
+        "title": "His daughter, then and now.",
+        "text": "The daughter is designed twice. As an adult, she works, has a family of her own, and lives a town away, calling when she can. As a schoolgirl with headphones and a backpack, she is the only version of her that Dad still remembers, the girl he knocks for behind her bedroom door.",
+        "image": "/assets/wonder-character-2.webp",
+        "caption": "Character design: the daughter as a working adult (left) and as a schoolgirl (right)."
+      },
+      {
         "title": "Telling a story through what changes.",
         "text": "Everyday objects, phone calls, and environmental details carry the narrative. Contradictions in time and place invite the player to notice what feels different, while the story unfolds through exploration rather than a constant stream of explanation."
       },
@@ -252,13 +264,19 @@ export const projects:Project[]=
       "/assets/wonder-archive-7.webp",
       "/assets/wonder-archive-8.webp",
       "/assets/wonder-archive-9.webp",
-      "/assets/wonder-archive-10.webp",
-      "/assets/wonder-character-1.webp",
-      "/assets/wonder-character-2.webp"
+      "/assets/wonder-archive-10.webp"
     ],
     "resources": [
       {
-        "label": "View the project document",
+        "label": "Read the script",
+        "href": "/wonder-of-you-script.pdf"
+      },
+      {
+        "label": "Read the technical design",
+        "href": "/wonder-of-you-technical-design.pdf"
+      },
+      {
+        "label": "View the interaction design document",
         "href": "https://drive.google.com/file/d/1w7PH02C2z9B9QYofCyKf5t0zoO_VOPma/view?usp=sharing"
       }
     ]
