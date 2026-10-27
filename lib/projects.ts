@@ -222,6 +222,15 @@ export const projects:Project[]=
     "intro": "Wonder of You is a first-person narrative VR project exploring memory, loss, and love through the perspective of a fictional person living with Alzheimer’s disease. Familiar interiors give way to dreamlike spaces, making uncertainty part of the experience.",
     "sections": [
       {
+        "title": "One day, told through what he forgets.",
+        "text": "A two-minute cut of the in-headset walkthrough follows Dad from an ordinary-seeming morning, through an empty clinic and three dream spaces carried by his wife’s voice, to the phone call that ends the day.",
+        "video": "/assets/wonder-trailer.mp4",
+        "poster": "/assets/wonder-trailer-poster.webp",
+        "videoWidth": 848,
+        "videoHeight": 478,
+        "videoCaption": "Trailer · 2:10 · Captured in headset, with sound."
+      },
+      {
         "title": "Meet Dad, the player.",
         "text": "The player is a retired engineer in his seventies who has lived with Alzheimer’s for nearly ten years. With his cap, glasses, cane, and a lanyard of house keys, he is gentle, polite, and easily puzzled. He still believes it is a morning twenty years ago. The player sees through his eyes and hears his inner voice.",
         "image": "/assets/wonder-character-1.webp",
